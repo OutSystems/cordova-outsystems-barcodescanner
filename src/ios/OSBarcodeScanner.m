@@ -2,7 +2,7 @@
 
 @implementation OSBarcodeScanner
 
-- (void)coolMethod:(CDVInvokedUrlCommand*)command
+- (void)scan:(CDVInvokedUrlCommand*)command
 {
     CDVPluginResult* pluginResult = nil;
     NSString* echo = [command.arguments objectAtIndex:0];
@@ -16,13 +16,5 @@
     [self.commandDelegate sendPluginResult:pluginResult callbackId:command.callbackId];
 }
 
-
--(NSString*)publicHelloWorld{
-    return [self privateHelloWorldString];
-}
-
--(NSString*)privateHelloWorldString{
-    return @"Hello World";
-}
 
 @end

@@ -2,9 +2,7 @@
 
 @interface OSBarcodeScanner : CDVPlugin
 
-- (void)coolMethod:(CDVInvokedUrlCommand*)command;
-
--(NSString*)publicHelloWorld;
+- (void)scan:(CDVInvokedUrlCommand*)command;
 
 
 @end
