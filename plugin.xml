@@ -18,13 +18,25 @@
   </platform>
 
   <platform name="ios">
+
+    <preference name="CAMERA_USAGE_DESCRIPTION" default=" " />
+    <config-file target="*-Info.plist" parent="NSCameraUsageDescription">
+        <string>$CAMERA_USAGE_DESCRIPTION</string>
+    </config-file>
+
     <config-file parent="/*" target="config.xml">
       <feature name="OSBarcodeScanner">
         <param name="ios-package" value="OSBarcodeScanner"/>
       </feature>
     </config-file>
+    
     <source-file src="src/ios/OSBarcodeScanner.m"/>
     <header-file src="src/ios/OSBarcodeScanner.h"/>
+    <source-file src="src/ios/ScannerViewController.m"/>
+    <header-file src="src/ios/ScannerViewController.h"/>
+    <source-file src="src/ios/ScannerViewController.xib"/>
+
+    <framework src="ZXingObjC" type="podspec" spec="~> 3.6.4"/>
   </platform>
 
 </plugin>
