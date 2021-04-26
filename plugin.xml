@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<plugin id="com.outsystems.plugins.barcodescanner" version="0.0.1" xmlns="http://apache.org/cordova/ns/plugins/1.0" xmlns:android="http://schemas.android.com/apk/res/android">
+  <name>OSBarcodeScanner</name>
+  <description>Outsystems Plugin to scann barcodes</description>
+  <author>OutSystems Inc</author>
+  <js-module name="OSBarcodeScanner" src="www/OSBarcodeScanner.js">
+    <clobbers target="cordova.plugins.OSBarcodeScanner"/>
+  </js-module>
+  <platform name="android">
+    <config-file parent="/*" target="res/xml/config.xml">
+      <feature name="OSBarcodeScanner">
+        <param name="android-package" value="com.outsystems.plugins.barcodescanner.OSBarcodeScanner"/>
+      </feature>
+    </config-file>
+    <config-file parent="/*" target="AndroidManifest.xml"/>
+    <source-file src="src/android/com/outsystems/plugins/barcodescanner/OSBarcodeScanner.java" target-dir="src/com/outsystems/plugins/barcodescanner"/>
+  </platform>
+  <platform name="ios">
+    <config-file parent="/*" target="config.xml">
+      <feature name="OSBarcodeScanner">
+        <param name="ios-package" value="OSBarcodeScanner"/>
+      </feature>
+    </config-file>
+    <source-file src="src/ios/OSBarcodeScanner.m"/>
+    <header-file src="src/ios/OSBarcodeScanner.h"/>
+  </platform>
+</plugin>
