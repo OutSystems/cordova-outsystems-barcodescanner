@@ -7,5 +7,6 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## [Unreleased]
 
 ## 2021-04-26
+- Created js layer for plugin [RMET-595](https://outsystemsrd.atlassian.net/browse/RMET-595)
 - Created repository for plugin [RMET-592](https://outsystemsrd.atlassian.net/browse/RMET-592)
 

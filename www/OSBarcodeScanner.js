@@ -1,5 +1,12 @@
 var exec = require('cordova/exec');
 
-exports.coolMethod = function (arg0, success, error) {
-    exec(success, error, 'OSBarcodeScanner', 'coolMethod', [arg0]);
+exports.scan = function (params, success, error) {
+    
+    params = params || {};
+    if(params.text_title === undefined) params.text_title = "Scan QR Code";
+    if(params.text_instructions === undefined) params.text_instructions = "Please point your camera at the QR code.";
+    if(params.camera != "front") params.camera = "back";
+    if(params.flash != "on" && params.flash != "off") params.flash = "auto";
+
+    exec(success, error, 'OSBarcodeScanner', 'scan', [params]);
 };

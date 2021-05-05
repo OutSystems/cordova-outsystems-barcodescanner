@@ -11,7 +11,7 @@ public class OSBarcodeScanner extends CordovaPlugin {
 
     @Override
     public boolean execute(String action, JSONArray args, CallbackContext callbackContext) throws JSONException {
-        if (action.equals("coolMethod")) {
+        if (action.equals("scan")) {
             String message = args.getString(0);
             this.coolMethod(message, callbackContext);
             return true;
@@ -19,20 +19,12 @@ public class OSBarcodeScanner extends CordovaPlugin {
         return false;
     }
 
-    private void coolMethod(String message, CallbackContext callbackContext) {
+    private void scan(String message, CallbackContext callbackContext) {
         if (message != null && message.length() > 0) {
             callbackContext.success(message);
         } else {
             callbackContext.error("Expected one non-empty string argument.");
         }
-    }
-
-    protected String privateHelloWorldString() {
-        return "Hello World";
-    }
-
-    public String publicHelloWorld() {
-        return this.privateHelloWorldString();
     }
 
 }
