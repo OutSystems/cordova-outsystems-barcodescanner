@@ -19,6 +19,7 @@
 @end
 
 @implementation ScannerViewController {
+  CALayer *frameLayer;
   CGAffineTransform _captureSizeTransform;
 }
 
@@ -29,30 +30,42 @@
 }
 
 - (void)viewDidLoad {
-  [super viewDidLoad];
-  
-  self.capture = [[ZXCapture alloc] init];
-  self.capture.sessionPreset = AVCaptureSessionPreset1920x1080;
-  self.capture.camera = self.capture.back;
-  self.capture.focusMode = AVCaptureFocusModeContinuousAutoFocus;
-  self.capture.delegate = self;
-  
-  self.scanning = NO;
-  
-  [self.view.layer addSublayer:self.capture.layer];
-  
-  [self.view bringSubviewToFront:self.scanRectView];
-  [self.view bringSubviewToFront:self.decodedLabel];
-  
-  //  [self.capture setLuminance: TRUE];
-  //  [self.capture.luminance setFrame: CGRectMake(150, 30, 100, 100)];
-  //  [self.view.layer addSublayer: self.capture.luminance];
-  
-  //  [self.capture enableHeuristic];
+    [super viewDidLoad];
+    
+    self.capture = [[ZXCapture alloc] init];
+    self.capture.sessionPreset = AVCaptureSessionPreset1920x1080;
+    self.capture.camera = self.capture.back;
+    self.capture.focusMode = AVCaptureFocusModeContinuousAutoFocus;
+    self.capture.delegate = self;
+    
+    self.scanning = NO;
+    
+    self.scanButton.layer.cornerRadius = 30;
+    self.scanButton.clipsToBounds = YES;
+    self.scanButton.imageEdgeInsets = UIEdgeInsetsMake(0, 100, 0, 0);
+    
+    [self.view.layer addSublayer:self.capture.layer];
+    [self.view bringSubviewToFront:self.scanRectView];
+    [self.view bringSubviewToFront:self.blurFrame];
+    [self.view bringSubviewToFront:self.externalView];
+    [self.view bringSubviewToFront:self.decodedLabel];
+    
+    [[UIDevice currentDevice] beginGeneratingDeviceOrientationNotifications];
+    [[NSNotificationCenter defaultCenter]
+       addObserver:self selector:@selector(orientationChanged:)
+       name:UIDeviceOrientationDidChangeNotification
+       object:[UIDevice currentDevice]];
+    
+}
+
+- (void)viewDidAppear:(BOOL)animated{
+    [self animateMovingBar];
+    [self addGradientToView];
 }
 
 - (void)viewWillAppear:(BOOL)animated {
-  [super viewWillAppear:animated];
+//  [super viewWillAppear:animated];
+
 }
 
 - (void)viewDidLayoutSubviews {
@@ -61,6 +74,38 @@
   if (_isFirstApplyOrientation) return;
   _isFirstApplyOrientation = TRUE;
   [self applyOrientation];
+}
+
+- (void)addGradientToView{
+    CAGradientLayer *gradientUp = [CAGradientLayer layer];
+    CAGradientLayer *gradientDown = [CAGradientLayer layer];
+
+    gradientUp.frame = _laserGradientUp.bounds;
+    gradientUp.colors = @[(id)[UIColor colorWithWhite:1 alpha:0].CGColor,(id)[UIColor whiteColor].CGColor];
+    gradientDown.frame = _laserGradientUp.bounds;
+    gradientDown.colors = @[(id)[UIColor whiteColor].CGColor, (id)[UIColor colorWithWhite:1 alpha:0].CGColor];
+
+    [_laserGradientUp.layer insertSublayer:gradientUp atIndex:0];
+    [_laserGradientDown.layer insertSublayer:gradientDown atIndex:0];
+}
+
+- (void)animateMovingBar{
+    
+    [UIView animateKeyframesWithDuration:2.0 delay:0.0 options:UIViewKeyframeAnimationOptionAutoreverse | UIViewKeyframeAnimationOptionRepeat animations:^{
+        [UIView addKeyframeWithRelativeStartTime:0 relativeDuration:1 animations:^{
+            self.movingBarTopConstraint.constant = 0;
+            [self->_scanRectView layoutIfNeeded];
+        }];
+        [UIView addKeyframeWithRelativeStartTime:0 relativeDuration:1 animations:^{
+            self.movingBarTopConstraint.constant = self->_scanRectView.bounds.size.height-3;
+            [self->_scanRectView layoutIfNeeded];
+        }];
+    } completion:nil];
+}
+
+- (void) orientationChanged:(NSNotification *)note
+{
+    [self animateMovingBar];
 }
 
 - (void)viewWillTransitionToSize:(CGSize)size withTransitionCoordinator:(id <UIViewControllerTransitionCoordinator>)coordinator {
@@ -96,22 +141,21 @@
       scanRectRotation = 270;
       break;
     default:
-      captureRotation = 0;
-      scanRectRotation = 90;
+      captureRotation = 90;
+      scanRectRotation = 0;
       break;
   }
   self.capture.layer.frame = self.view.frame;
-  CGAffineTransform transform = CGAffineTransformMakeRotation((CGFloat) (captureRotation / 180 * M_PI));
+    self.capture.rotation = scanRectRotation;
+    CGAffineTransform transform = CGAffineTransformMakeRotation((CGFloat)(captureRotation / 180 * M_PI));
   [self.capture setTransform:transform];
-  [self.capture setRotation:scanRectRotation];
-  
   [self applyRectOfInterest:orientation];
 }
 
 - (void)applyRectOfInterest:(UIInterfaceOrientation)orientation {
   CGFloat scaleVideoX, scaleVideoY;
   CGFloat videoSizeX, videoSizeY;
-  CGRect transformedVideoRect = self.scanRectView.frame;
+    CGRect transformedVideoRect = self.scanRectView.frame;
   if([self.capture.sessionPreset isEqualToString:AVCaptureSessionPreset1920x1080]) {
     videoSizeX = 1080;
     videoSizeY = 1920;
@@ -131,14 +175,15 @@
     CGFloat realWidth = transformedVideoRect.size.height;
     CGFloat realHeight = transformedVideoRect.size.width;
     transformedVideoRect = CGRectMake(realX, realY, realWidth, realHeight);
-    
   } else {
-    scaleVideoX = self.capture.layer.frame.size.width / videoSizeY;
-    scaleVideoY = self.capture.layer.frame.size.height / videoSizeX;
+      scaleVideoX = self.capture.layer.frame.size.width / videoSizeY;
+      scaleVideoY = self.capture.layer.frame.size.height / videoSizeX;
   }
   
   _captureSizeTransform = CGAffineTransformMakeScale(1.0/scaleVideoX, 1.0/scaleVideoY);
-  self.capture.scanRect = CGRectApplyAffineTransform(transformedVideoRect, _captureSizeTransform);
+    self.capture.scanRect = [[UIScreen mainScreen] bounds];
+    self.capture.scanRect = CGRectApplyAffineTransform(transformedVideoRect, _captureSizeTransform);
+    self.capture.layer.frame = UIScreen.mainScreen.bounds;
 }
 
 #pragma mark - Private Methods
@@ -201,7 +246,7 @@
 #pragma mark - ZXCaptureDelegate Methods
 
 - (void)captureCameraIsReady:(ZXCapture *)capture {
-  self.scanning = YES;
+//  self.scanning = YES;
 }
 
 - (void)captureResult:(ZXCapture *)capture result:(ZXResult *)result {
@@ -226,19 +271,49 @@
   }
   
   // Display information about the result onscreen.
-  NSString *formatString = [self barcodeFormatToString:result.barcodeFormat];
-  NSString *display = [NSString stringWithFormat:@"Scanned!\n\nFormat: %@\n\nContents:\n%@\nLocation: %@", formatString, result.text, location];
+//  NSString *formatString = [self barcodeFormatToString:result.barcodeFormat];
+  NSString *display = [NSString stringWithFormat:@"Scanned!\nContents:%@", result.text];
   [self.decodedLabel performSelectorOnMainThread:@selector(setText:) withObject:display waitUntilDone:YES];
   
   // Vibrate
   AudioServicesPlaySystemSound(kSystemSoundID_Vibrate);
   
-  dispatch_after(dispatch_time(DISPATCH_TIME_NOW, 2 * NSEC_PER_SEC), dispatch_get_main_queue(), ^{
-    self.scanning = YES;
-    [self.capture start];
-  });
+    [self dissmissVC:result.text];
+    
+//  dispatch_after(dispatch_time(DISPATCH_TIME_NOW, 2 * NSEC_PER_SEC), dispatch_get_main_queue(), ^{
+//    self.scanning = YES;
+//    [self.capture start];
+//  });
+}
+
+- (IBAction)closeBtnPressed:(id)sender {
+//    [self dismissViewControllerAnimated:true completion:nil];
+    [self dissmissVC:@"error"];
+}
+
+- (IBAction)scanBtnPressed:(id)sender {
+    // Vibrate
+    AudioServicesPlaySystemSound(kSystemSoundID_Vibrate);
+    self.scanning = !self.scanning;
+//    if (self.scanning) {
+//        self.scanButton.backgroundColor = [UIColor darkGrayColor];
+//    } else {
+//        self.scanButton.backgroundColor = [UIColor lightGrayColor];
+//    }
+}
+
+- (IBAction)flashBtnPressed:(id)sender {
+    self.capture.torch = !self.capture.torch;
+}
+
+-(void)dissmissVC:(NSString*)message{
+    [self dismissViewControllerAnimated:true completion:nil];
+    NSLog(@"DismissViewController");
+
+    //raise notification about dismiss
+    [[NSNotificationCenter defaultCenter]
+          postNotificationName:@"barcode reader finished"
+                        object:message];
 }
 
 @end
-
-
