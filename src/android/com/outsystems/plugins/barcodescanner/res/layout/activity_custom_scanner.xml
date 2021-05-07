@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="com.outsystems.plugins.barcodescanner.CustomScannerActivity">
+
+    <com.journeyapps.barcodescanner.DecoratedBarcodeView
+        android:id="@+id/zxing_barcode_scanner"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        app:zxing_scanner_layout="@layout/custom_barcode_scanner">
+    </com.journeyapps.barcodescanner.DecoratedBarcodeView>
+
+    <ImageButton
+        android:id="@+id/switch_flashlight"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignRight="@id/zxing_barcode_scanner"
+        android:layout_alignParentTop="true"
+        android:layout_marginRight="10dp"
+        android:src="@drawable/ic_flash"
+        android:padding="20dp"
+        android:background="@android:color/transparent"
+        android:onClick="switchFlashlight" />
+
+    <ImageButton
+        android:id="@+id/close_button_port"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignLeft="@id/zxing_barcode_scanner"
+        android:layout_alignParentTop="true"
+        android:layout_marginLeft="10dp"
+        android:background="@android:color/transparent"
+        android:onClick="closeScreen"
+        android:padding="20dp"
+        android:src="@drawable/ic_close" />
+
+    <Button
+        android:id="@+id/scan_button_port"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignBottom="@id/zxing_barcode_scanner"
+        android:layout_alignParentBottom="true"
+        android:layout_centerHorizontal="true"
+        android:layout_marginBottom="60dp"
+        android:drawableLeft="@drawable/ic_scan"
+        android:padding="15dp"
+        android:drawablePadding="3dp"
+        android:text="Scan"
+        android:background="@drawable/scan_button"
+        android:onClick="scan" />
+
+</RelativeLayout>
