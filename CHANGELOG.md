@@ -6,6 +6,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## 2021-05-07
+- Implementation of the Barcode Plugin for Android [RMET-594](https://outsystemsrd.atlassian.net/browse/RMET-594)
 ## 2021-05-05
 - Added pipeline configurations to repo (CI folder) [RMET-597](https://outsystemsrd.atlassian.net/browse/RMET-597)
 
