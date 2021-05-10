@@ -55,9 +55,9 @@ public class OSBarcodeScanner extends CordovaPlugin {
         if(result.getContents() == null) {
             Intent originalIntent = result.getOriginalIntent();
             if (originalIntent == null) {
-                _callbackContext.success("Cancelled");
+                _callbackContext.error("Cancelled");
             } else if(originalIntent.hasExtra(Intents.Scan.MISSING_CAMERA_PERMISSION)) {
-                _callbackContext.success("Cancelled due to missing camera permission");
+                _callbackContext.error("Cancelled due to missing camera permission");
             }
         } else {
             _callbackContext.success(result.getContents());
