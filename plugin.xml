@@ -8,6 +8,25 @@
   </js-module>
   
   <platform name="android">
+
+    <config-file target="AndroidManifest.xml" parent="application">        
+    <activity android:name=".CustomScannerActivity"
+            android:screenOrientation="fullSensor"
+            android:stateNotNeeded="true"
+            android:theme="@style/zxing_CaptureTheme"
+            android:windowSoftInputMode="stateAlwaysHidden"></activity>    
+    </config-file>
+
+    <config-file target="AndroidManifest.xml" parent="/manifest">
+        <uses-sdk tools:overrideLibrary="com.google.zxing.client.android" />
+    </config-file>  
+
+    <config-file target="res/xml/config.xml" parent="/*">
+      <feature name="Camera">
+        <param name="android-package" value="org.apache.cordova.camera.CameraLauncher"/>
+      </feature>
+    </config-file>
+
     <config-file parent="/*" target="res/xml/config.xml">
       <feature name="OSBarcodeScanner">
         <param name="android-package" value="com.outsystems.plugins.barcodescanner.OSBarcodeScanner"/>
@@ -15,6 +34,18 @@
     </config-file>
     <config-file parent="/*" target="AndroidManifest.xml"/>
     <source-file src="src/android/com/outsystems/plugins/barcodescanner/OSBarcodeScanner.java" target-dir="src/com/outsystems/plugins/barcodescanner"/>
+    <source-file src="src/android/com/outsystems/plugins/barcodescanner/CustomScannerActivity.java" target-dir="src/com/outsystems/plugins/barcodescanner"/>
+    <source-file src="src/android/com/outsystems/plugins/barcodescanner/res/drawable/ic_close.xml" target-dir="res/drawable"/>
+    <source-file src="src/android/com/outsystems/plugins/barcodescanner/res/drawable/ic_flash.xml" target-dir="res/drawable"/>
+    <source-file src="src/android/com/outsystems/plugins/barcodescanner/res/drawable/ic_scan.xml" target-dir="res/drawable"/>
+    <source-file src="src/android/com/outsystems/plugins/barcodescanner/res/drawable/scan_button.xml" target-dir="res/drawable"/>
+    <source-file src="src/android/com/outsystems/plugins/barcodescanner/res/layout/activity_custom_scanner.xml" target-dir="res/layout"/>
+    <source-file src="src/android/com/outsystems/plugins/barcodescanner/res/layout/custom_barcode_scanner.xml" target-dir="res/layout"/>
+    <source-file src="src/android/com/outsystems/plugins/barcodescanner/res/layout-land/activity_custom_scanner.xml" target-dir="res/layout-land"/>
+    <source-file src="src/android/com/outsystems/plugins/barcodescanner/res/layout-land/custom_barcode_scanner.xml" target-dir="res/layout-land"/>
+    
+    <framework src="com.github.OutSystems:zxing-android-embedded:teste" />
+    
   </platform>
 
   <platform name="ios">
