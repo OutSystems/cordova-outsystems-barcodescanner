@@ -1,12 +1,19 @@
 package com.outsystems.plugins.barcodescanner;
 import android.app.Activity;
+import android.content.Intent;
+import android.content.pm.ActivityInfo;
 import android.content.pm.PackageManager;
 import android.content.res.Resources;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.view.KeyEvent;
 import android.view.View;
+import android.widget.Button;
 import android.widget.ImageButton;
+import android.widget.TextView;
+
+import com.outsystems.barcodescanner.R;
+
 import androidx.annotation.NonNull;
 import com.journeyapps.barcodescanner.CaptureManager;
 import com.journeyapps.barcodescanner.DecoratedBarcodeView;
@@ -27,21 +34,46 @@ public class CustomScannerActivity extends Activity implements
 
     // For retrieving R.* resources, from the actual app package
     // (we can't use actual.application.package.R.* in our code as we
-    // don't know the applciation package name when writing this plugin).
+    // don't know the application package name when writing this plugin).
     private String package_name;
     private Resources resources;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(getResourceId("id/activity_custom_scanner"));
+        setContentView(R.layout.activity_custom_scanner);
 
+        String scanInstructions = getIntent().getStringExtra("SCAN_INSTRUCTIONS");
+        String scanOrientation = getIntent().getStringExtra("SCAN_ORIENTATION");
+        boolean scanLine = getIntent().getBooleanExtra("SCAN_LINE", true);
+        boolean scanButtonVisible = getIntent().getBooleanExtra("SCAN_BUTTON", true);
+
+        //barcodeScannerView = findViewById(R.id.zxing_barcode_scanner);
+        //barcodeScannerView.setTorchListener(this);
+        //switchFlashlightButton = findViewById(R.id.switch_flashlight);
+        //viewfinderView = findViewById(R.id.zxing_viewfinder_view);
+
+        setContentView(getResourceId("id/activity_custom_scanner"));
         barcodeScannerView = findViewById(getResourceId("id/zxing_barcode_scanner"));
         barcodeScannerView.setTorchListener(this);
-
         switchFlashlightButton = findViewById(getResourceId("id/switch_flashlight"));
-
         viewfinderView = findViewById(getResourceId("id/zxing_viewfinder_view"));
+
+        if (!scanButtonVisible) {
+            View scanBtn = findViewById(R.id.scan_button);
+            scanBtn.setVisibility(View.GONE);
+        }
+
+        if (scanOrientation == "landscape") {
+            setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_SENSOR_LANDSCAPE);
+        } else if (scanOrientation == "portrait") {
+            setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_SENSOR_PORTRAIT);
+        }
+
+
+        // Load and use views afterwards
+        TextView statusView = (TextView)findViewById(R.id.zxing_status_view);
+        statusView.setText(scanInstructions);
 
         // if the device does not have flashlight in its camera,
         // then remove the switch flashlight button...
@@ -52,9 +84,8 @@ public class CustomScannerActivity extends Activity implements
         capture = new CaptureManager(this, barcodeScannerView);
         capture.initializeFromIntent(getIntent(), savedInstanceState);
         capture.setShowMissingCameraPermissionDialog(false);
-
         changeMaskColor(null);
-        changeLaserVisibility(true);
+        changeLaserVisibility(scanLine);
 
     }
 
