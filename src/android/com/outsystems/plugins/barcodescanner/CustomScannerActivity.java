@@ -1,24 +1,16 @@
 package com.outsystems.plugins.barcodescanner;
-
 import android.app.Activity;
 import android.content.pm.PackageManager;
+import android.content.res.Resources;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.view.KeyEvent;
 import android.view.View;
-import android.widget.Button;
 import android.widget.ImageButton;
-
 import androidx.annotation.NonNull;
-
-import com.outsystems.barcodescanner.R;
-
 import com.journeyapps.barcodescanner.CaptureManager;
 import com.journeyapps.barcodescanner.DecoratedBarcodeView;
 import com.journeyapps.barcodescanner.ViewfinderView;
-import com.journeyapps.barcodescanner.*;
-
-import java.util.Random;
 
 /**
  * Custom Scannner Activity extending from Activity to display a custom layout form scanner view.
@@ -33,17 +25,23 @@ public class CustomScannerActivity extends Activity implements
     private boolean flashlightOn=false;
     private boolean isScanning=false;
 
+    // For retrieving R.* resources, from the actual app package
+    // (we can't use actual.application.package.R.* in our code as we
+    // don't know the applciation package name when writing this plugin).
+    private String package_name;
+    private Resources resources;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_custom_scanner);
+        setContentView(getResourceId("id/activity_custom_scanner"));
 
-        barcodeScannerView = findViewById(R.id.zxing_barcode_scanner);
+        barcodeScannerView = findViewById(getResourceId("id/zxing_barcode_scanner"));
         barcodeScannerView.setTorchListener(this);
 
-        switchFlashlightButton = findViewById(R.id.switch_flashlight);
+        switchFlashlightButton = findViewById(getResourceId("id/switch_flashlight"));
 
-        viewfinderView = findViewById(R.id.zxing_viewfinder_view);
+        viewfinderView = findViewById(getResourceId("id/zxing_viewfinder_view"));
 
         // if the device does not have flashlight in its camera,
         // then remove the switch flashlight button...
@@ -70,6 +68,13 @@ public class CustomScannerActivity extends Activity implements
     protected void onPause() {
         super.onPause();
         capture.onPause();
+    }
+
+    private int getResourceId (String typeAndName)
+    {
+        if(package_name == null) package_name = getApplication().getPackageName();
+        if(resources == null) resources = getApplication().getResources();
+        return resources.getIdentifier(typeAndName, null, package_name);
     }
 
     @Override
