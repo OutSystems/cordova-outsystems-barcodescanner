@@ -57,7 +57,7 @@ public class CustomScannerActivity extends Activity implements
         viewfinderView = findViewById(getResourceId("id/zxing_viewfinder_view"));
 
         if (!scanButtonVisible) {
-            View scanBtn = findViewById(R.id.scan_button);
+            View scanBtn = findViewById(getResourceId("id/scan_button"));
             scanBtn.setVisibility(View.GONE);
         }
 
@@ -67,9 +67,8 @@ public class CustomScannerActivity extends Activity implements
             setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_SENSOR_PORTRAIT);
         }
 
-
         // Load and use views afterwards
-        TextView statusView = (TextView)findViewById(R.id.zxing_status_view);
+        TextView statusView = (TextView)findViewById(getResourceId("id/scanzxing_status_view_button"));
         statusView.setText(scanInstructions);
 
         // if the device does not have flashlight in its camera,
