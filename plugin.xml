@@ -9,6 +9,10 @@
   
   <platform name="android">
 
+    <edit-config file="AndroidManifest.xml" target="/manifest" mode="merge">
+        <manifest xmlns:tools="http://schemas.android.com/tools" />
+    </edit-config>
+
     <config-file target="AndroidManifest.xml" parent="application">        
     <activity android:name="com.outsystems.plugins.barcodescanner.CustomScannerActivity"
             android:screenOrientation="fullSensor"
