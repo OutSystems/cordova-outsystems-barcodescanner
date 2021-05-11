@@ -9,6 +9,8 @@
   
   <platform name="android">
 
+    <hook type="after_prepare" src="hooks/androidSetToolsTag.js" />
+
     <config-file target="AndroidManifest.xml" parent="application">        
     <activity android:name="com.outsystems.plugins.barcodescanner.CustomScannerActivity"
             android:screenOrientation="fullSensor"
