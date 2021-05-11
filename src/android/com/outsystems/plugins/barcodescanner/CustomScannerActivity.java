@@ -38,7 +38,6 @@ public class CustomScannerActivity extends Activity implements
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_custom_scanner);
 
         String scanInstructions = getIntent().getStringExtra("SCAN_INSTRUCTIONS");
         String scanOrientation = getIntent().getStringExtra("SCAN_ORIENTATION");
