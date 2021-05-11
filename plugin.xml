@@ -10,7 +10,7 @@
   <platform name="android">
 
     <config-file target="AndroidManifest.xml" parent="application">        
-    <activity android:name=".CustomScannerActivity"
+    <activity android:name="com.outsystems.plugins.barcodescanner.CustomScannerActivity"
             android:screenOrientation="fullSensor"
             android:stateNotNeeded="true"
             android:theme="@style/zxing_CaptureTheme"
