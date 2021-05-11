@@ -11,8 +11,8 @@ module.exports = function (context) {
     var manifestFile = fs.readFileSync(manifestPath).toString();
     var etreeManifest = et.parse(manifestFile);
 
-    var dataTags = etreeManifest.findall('./manifest');
-    dataTags.set("xmlns:tools", "http://schemas.android.com/tools");
+    var dataTags = etreeManifest.findall('./');
+    dataTags[0].set("xmlns:tools", "http://schemas.android.com/tools");
 
     var resultXmlManifest = etreeManifest.write();
     fs.writeFileSync(manifestPath, resultXmlManifest);
