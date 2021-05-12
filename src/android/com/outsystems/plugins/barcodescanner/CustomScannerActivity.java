@@ -43,13 +43,14 @@ public class CustomScannerActivity extends Activity implements
         String scanOrientation = getIntent().getStringExtra("SCAN_ORIENTATION");
         boolean scanLine = getIntent().getBooleanExtra("SCAN_LINE", true);
         boolean scanButtonVisible = getIntent().getBooleanExtra("SCAN_BUTTON", true);
-
+        
+        //setContentView(R.layout.activity_custom_scanner);
         //barcodeScannerView = findViewById(R.id.zxing_barcode_scanner);
         //barcodeScannerView.setTorchListener(this);
         //switchFlashlightButton = findViewById(R.id.switch_flashlight);
         //viewfinderView = findViewById(R.id.zxing_viewfinder_view);
 
-        setContentView(getResourceId("id/activity_custom_scanner"));
+        setContentView(getResourceId("layout/activity_custom_scanner"));
         barcodeScannerView = findViewById(getResourceId("id/zxing_barcode_scanner"));
         barcodeScannerView.setTorchListener(this);
         switchFlashlightButton = findViewById(getResourceId("id/switch_flashlight"));
@@ -67,7 +68,7 @@ public class CustomScannerActivity extends Activity implements
         }
 
         // Load and use views afterwards
-        TextView statusView = (TextView)findViewById(getResourceId("id/scanzxing_status_view_button"));
+        TextView statusView = (TextView)findViewById(getResourceId("id/zxing_status_view"));
         statusView.setText(scanInstructions);
 
         // if the device does not have flashlight in its camera,
