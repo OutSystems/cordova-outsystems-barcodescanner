@@ -59,6 +59,8 @@ public class CustomScannerActivity extends Activity implements
         if (!scanButtonVisible) {
             View scanBtn = findViewById(getResourceId("id/scan_button"));
             scanBtn.setVisibility(View.GONE);
+
+            capture.decode();
         }
 
         if (scanOrientation == "landscape") {
