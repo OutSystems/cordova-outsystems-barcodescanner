@@ -62,10 +62,10 @@ public class CustomScannerActivity extends Activity implements
 
             capture.decode();
         }
-
-        if (scanOrientation == "landscape") {
+        
+        if (scanOrientation.equals("landscape")) {
             setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_SENSOR_LANDSCAPE);
-        } else if (scanOrientation == "portrait") {
+        } else if (scanOrientation.equals("portrait")) {
             setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_SENSOR_PORTRAIT);
         }
 
