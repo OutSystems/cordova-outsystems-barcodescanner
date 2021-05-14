@@ -29,12 +29,14 @@ public class OSBarcodeScanner extends CordovaPlugin {
             String scanOrientation = params.optString("scan_orientation");
             boolean scanLine = params.optBoolean("scan_line");
             boolean scanButton = params.optBoolean("scan_button");
+            String scanText = params.optString("scan_button_text");
 
             this.scan(scanInstructions,
                     cameraDirection,
                     scanOrientation,
                     scanLine,
-                    scanButton);
+                    scanButton,
+                    scanText);
             return true;
         }
         return false;
@@ -44,7 +46,8 @@ public class OSBarcodeScanner extends CordovaPlugin {
                       String cameraDirection,
                       String scanOrientation,
                       boolean scanLine,
-                      boolean scanButton) {
+                      boolean scanButton,
+                      String scanText) {
 
         IntentIntegrator integrator = new IntentIntegrator(this.cordova.getActivity());
         integrator.setOrientationLocked(false);
@@ -60,6 +63,7 @@ public class OSBarcodeScanner extends CordovaPlugin {
         integrator.addExtra("SCAN_ORIENTATION", scanOrientation);
         integrator.addExtra("SCAN_LINE", scanLine);
         integrator.addExtra("SCAN_BUTTON", scanButton);
+        integrator.addExtra("SCAN_TEXT", scanText);
         integrator.initiateScan();
 
         this.cordova.setActivityResultCallback(this);

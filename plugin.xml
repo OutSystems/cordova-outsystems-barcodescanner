@@ -46,7 +46,7 @@
     <source-file src="src/android/com/outsystems/plugins/barcodescanner/res/layout-land/activity_custom_scanner.xml" target-dir="res/layout-land"/>
     <source-file src="src/android/com/outsystems/plugins/barcodescanner/res/layout-land/custom_barcode_scanner.xml" target-dir="res/layout-land"/>
     
-    <framework src="com.github.OutSystems:zxing-android-embedded:teste" />
+    <framework src="com.github.OutSystems:zxing-android-embedded:v5.0.0" />
     
   </platform>
 

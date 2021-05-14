@@ -43,7 +43,8 @@ public class CustomScannerActivity extends Activity implements
         String scanOrientation = getIntent().getStringExtra("SCAN_ORIENTATION");
         boolean scanLine = getIntent().getBooleanExtra("SCAN_LINE", true);
         boolean scanButtonVisible = getIntent().getBooleanExtra("SCAN_BUTTON", true);
-        
+        String scanButtonText = getIntent().getStringExtra("SCAN_TEXT");
+
         //setContentView(R.layout.activity_custom_scanner);
         //barcodeScannerView = findViewById(R.id.zxing_barcode_scanner);
         //barcodeScannerView.setTorchListener(this);
@@ -56,13 +57,6 @@ public class CustomScannerActivity extends Activity implements
         switchFlashlightButton = findViewById(getResourceId("id/switch_flashlight"));
         viewfinderView = findViewById(getResourceId("id/zxing_viewfinder_view"));
 
-        if (!scanButtonVisible) {
-            View scanBtn = findViewById(getResourceId("id/scan_button"));
-            scanBtn.setVisibility(View.GONE);
-
-            capture.decode();
-        }
-        
         if (scanOrientation.equals("landscape")) {
             setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_SENSOR_LANDSCAPE);
         } else if (scanOrientation.equals("portrait")) {
@@ -82,6 +76,18 @@ public class CustomScannerActivity extends Activity implements
         capture = new CaptureManager(this, barcodeScannerView);
         capture.initializeFromIntent(getIntent(), savedInstanceState);
         capture.setShowMissingCameraPermissionDialog(false);
+
+        Button scanBtn = findViewById(getResourceId("id/scan_button"));
+
+        if (!scanButtonVisible) {
+            scanBtn.setVisibility(View.GONE);
+
+            capture.decode();
+        } else {
+            scanBtn.setText(scanButtonText);
+        }
+
+
         changeMaskColor(null);
         changeLaserVisibility(scanLine);
 
