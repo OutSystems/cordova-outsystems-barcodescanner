@@ -29,14 +29,23 @@
         <param name="ios-package" value="OSBarcodeScanner"/>
       </feature>
     </config-file>
-    
+    <source-file src="src/ios/CDVBarcodeOptions.m"/>
+    <header-file src="src/ios/CDVBarcodeOptions.h"/>
     <source-file src="src/ios/OSBarcodeScanner.m"/>
     <header-file src="src/ios/OSBarcodeScanner.h"/>
     <source-file src="src/ios/ScannerViewController.m"/>
     <header-file src="src/ios/ScannerViewController.h"/>
     <source-file src="src/ios/ScannerViewController.xib"/>
-
-    <framework src="ZXingObjC" type="podspec" spec="~> 3.6.4"/>
+    <resource-file src="src/ios/BarcodeLocal.xcassets"/>
+    
+    <podspec>
+        <config>
+            <source url="https://cdn.cocoapods.org/"/>
+        </config>
+        <pods>
+            <pod name="ZXingObjC" git="https://github.com/OutSystems/ZXingObjC.git" tag="3.6.4"/>
+        </pods>
+    </podspec>
+    
   </platform>
-
 </plugin>
