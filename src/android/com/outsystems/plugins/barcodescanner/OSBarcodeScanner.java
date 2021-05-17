@@ -17,6 +17,9 @@ public class OSBarcodeScanner extends CordovaPlugin {
     public final int CUSTOMIZED_REQUEST_CODE = 0x0000ffff;
     static private CallbackContext _callbackContext;
 
+    public static final int BACK_CAMERA = 0;
+    public static final int FRONT_CAMERA = 1;
+
     @Override
     public boolean execute(String action, JSONArray args, CallbackContext callbackContext) throws JSONException {
         _callbackContext = callbackContext;
@@ -25,8 +28,8 @@ public class OSBarcodeScanner extends CordovaPlugin {
 
             JSONObject params = args.optJSONObject(0);
             String scanInstructions = params.optString("scan_instructions");
-            String cameraDirection = params.optString("camera_direction");
-            String scanOrientation = params.optString("scan_orientation");
+            int cameraDirection = params.optInt("camera_direction");
+            int scanOrientation = params.optInt("scan_orientation");
             boolean scanLine = params.optBoolean("scan_line");
             boolean scanButton = params.optBoolean("scan_button");
             String scanText = params.optString("scan_button_text");
@@ -43,8 +46,8 @@ public class OSBarcodeScanner extends CordovaPlugin {
     }
 
     private void scan(String scanInstructions,
-                      String cameraDirection,
-                      String scanOrientation,
+                      int cameraDirection,
+                      int scanOrientation,
                       boolean scanLine,
                       boolean scanButton,
                       String scanText) {
@@ -52,9 +55,9 @@ public class OSBarcodeScanner extends CordovaPlugin {
         IntentIntegrator integrator = new IntentIntegrator(this.cordova.getActivity());
         integrator.setOrientationLocked(false);
 
-        if (cameraDirection == "backCamera") {
+        if (cameraDirection == BACK_CAMERA) {
             integrator.setCameraId(0);
-        } else if (cameraDirection == "frontCamera") {
+        } else if (cameraDirection == FRONT_CAMERA) {
             integrator.setCameraId(1);
         }
 

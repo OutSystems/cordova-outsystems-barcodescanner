@@ -27,7 +27,9 @@ public class CustomScannerActivity extends Activity implements
     private ImageButton switchFlashlightButton;
     private ViewfinderView viewfinderView;
     private boolean flashlightOn=false;
-    private boolean isScanning=false;
+
+    public static final int PORTRAIT = 1;
+    public static final int LANDSCAPE = 2;
 
     // For retrieving R.* resources, from the actual app package
     // (we can't use actual.application.package.R.* in our code as we
@@ -40,7 +42,7 @@ public class CustomScannerActivity extends Activity implements
         super.onCreate(savedInstanceState);
 
         String scanInstructions = getIntent().getStringExtra("SCAN_INSTRUCTIONS");
-        String scanOrientation = getIntent().getStringExtra("SCAN_ORIENTATION");
+        int scanOrientation = getIntent().getIntExtra("SCAN_ORIENTATION", 0);
         boolean scanLine = getIntent().getBooleanExtra("SCAN_LINE", true);
         boolean scanButtonVisible = getIntent().getBooleanExtra("SCAN_BUTTON", true);
         String scanButtonText = getIntent().getStringExtra("SCAN_TEXT");
@@ -51,9 +53,9 @@ public class CustomScannerActivity extends Activity implements
         switchFlashlightButton = findViewById(getResourceId("id/switch_flashlight"));
         viewfinderView = findViewById(getResourceId("id/zxing_viewfinder_view"));
 
-        if (scanOrientation.equals("landscape")) {
+        if (scanOrientation == LANDSCAPE) {
             setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_SENSOR_LANDSCAPE);
-        } else if (scanOrientation.equals("portrait")) {
+        } else if (scanOrientation == PORTRAIT) {
             setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_SENSOR_PORTRAIT);
         }
 
@@ -172,3 +174,4 @@ public class CustomScannerActivity extends Activity implements
         capture.onRequestPermissionsResult(requestCode, permissions, grantResults);
     }
 }
+
