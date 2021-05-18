@@ -2,7 +2,6 @@
 <document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="17701" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" colorMatched="YES">
     <device id="retina6_1" orientation="portrait" appearance="light"/>
     <dependencies>
-        <deployment identifier="iOS"/>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="17703"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
@@ -81,7 +80,7 @@
                                         <constraint firstAttribute="height" constant="40" id="AbX-f6-z3r"/>
                                         <constraint firstAttribute="width" constant="40" id="zV1-fi-buy"/>
                                     </constraints>
-                                    <state key="normal" title="Button" image="flash"/>
+                                    <state key="normal" image="flash"/>
                                     <connections>
                                         <action selector="flashBtnPressed:" destination="-1" eventType="touchUpInside" id="Smw-uR-eBv"/>
                                     </connections>
@@ -94,7 +93,7 @@
                                         <constraint firstAttribute="height" relation="greaterThanOrEqual" constant="40" id="d2h-kn-NyL"/>
                                         <constraint firstAttribute="width" relation="greaterThanOrEqual" constant="40" id="xfv-UF-bMT"/>
                                     </constraints>
-                                    <state key="normal" title="Button" image="close"/>
+                                    <state key="normal" image="close"/>
                                     <connections>
                                         <action selector="closeBtnPressed:" destination="-1" eventType="touchUpInside" id="vaN-74-fqz"/>
                                     </connections>
@@ -132,7 +131,7 @@
                                         <constraint firstAttribute="width" constant="150" id="T7k-aF-YP4"/>
                                         <constraint firstAttribute="height" constant="60" id="kiI-ED-CXd"/>
                                     </constraints>
-                                    <state key="normal" title="Scan" image="scan">
+                                    <state key="normal" image="scan">
                                         <color key="titleColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                     </state>
                                     <connections>
