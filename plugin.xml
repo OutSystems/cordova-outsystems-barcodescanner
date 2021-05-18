@@ -47,7 +47,7 @@
     <source-file src="src/android/com/outsystems/plugins/barcodescanner/res/layout-land/custom_barcode_scanner.xml" target-dir="res/layout-land"/>
     
     <framework src="build-extras-zxing.gradle" custom="true" type="gradleReference" />
-    <resource-file src="src/android/com/outsystems/plugins/barcodescanner/lib/zxing-android-embedded-v5.0.0.aar" target="libs/zxing-android-embedded-v5.0.0.aar" />
+    <resource-file src="src/android/com/outsystems/plugins/barcodescanner/lib/zxing-android-embedded-4.2.0-OS.aar" target="libs/zxing-android-embedded-4.2.0-OS.aar" />
     
   </platform>
 
