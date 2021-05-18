@@ -9,8 +9,10 @@
   
   <platform name="android">
 
+    <hook type="after_prepare" src="hooks/androidSetToolsTag.js" />
+
     <config-file target="AndroidManifest.xml" parent="application">        
-    <activity android:name=".CustomScannerActivity"
+    <activity android:name="com.outsystems.plugins.barcodescanner.CustomScannerActivity"
             android:screenOrientation="fullSensor"
             android:stateNotNeeded="true"
             android:theme="@style/zxing_CaptureTheme"
@@ -44,7 +46,8 @@
     <source-file src="src/android/com/outsystems/plugins/barcodescanner/res/layout-land/activity_custom_scanner.xml" target-dir="res/layout-land"/>
     <source-file src="src/android/com/outsystems/plugins/barcodescanner/res/layout-land/custom_barcode_scanner.xml" target-dir="res/layout-land"/>
     
-    <framework src="com.github.OutSystems:zxing-android-embedded:teste" />
+    <framework src="build-extras-zxing.gradle" custom="true" type="gradleReference" />
+    <resource-file src="src/android/com/outsystems/plugins/barcodescanner/lib/zxing-android-embedded-4.2.0-OS.aar" target="libs/zxing-android-embedded-4.2.0-OS.aar" />
     
   </platform>
 

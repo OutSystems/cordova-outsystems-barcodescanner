@@ -38,7 +38,7 @@
         android:src="@drawable/ic_close" />
 
     <Button
-        android:id="@+id/scan_button_port"
+        android:id="@+id/scan_button"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignBottom="@id/zxing_barcode_scanner"

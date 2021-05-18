@@ -1,10 +1,13 @@
 package com.outsystems.plugins.barcodescanner;
 import android.content.Intent;
-import android.util.Log;
+import android.hardware.Camera;
+
 import org.apache.cordova.CordovaPlugin;
 import org.apache.cordova.CallbackContext;
 import org.json.JSONArray;
 import org.json.JSONException;
+import org.json.JSONObject;
+
 import com.google.zxing.client.android.Intents;
 import com.google.zxing.integration.android.IntentIntegrator;
 import com.google.zxing.integration.android.IntentResult;
@@ -14,30 +17,57 @@ public class OSBarcodeScanner extends CordovaPlugin {
     public final int CUSTOMIZED_REQUEST_CODE = 0x0000ffff;
     static private CallbackContext _callbackContext;
 
+    public static final int BACK_CAMERA = 0;
+    public static final int FRONT_CAMERA = 1;
+
     @Override
     public boolean execute(String action, JSONArray args, CallbackContext callbackContext) throws JSONException {
         _callbackContext = callbackContext;
 
         if (action.equals("scan")) {
-            String message = args.getString(0);
-            this.scan(message, callbackContext);
+
+            JSONObject params = args.optJSONObject(0);
+            String scanInstructions = params.optString("scan_instructions");
+            int cameraDirection = params.optInt("camera_direction");
+            int scanOrientation = params.optInt("scan_orientation");
+            boolean scanLine = params.optBoolean("scan_line");
+            boolean scanButton = params.optBoolean("scan_button");
+            String scanText = params.optString("scan_button_text");
+
+            this.scan(scanInstructions,
+                    cameraDirection,
+                    scanOrientation,
+                    scanLine,
+                    scanButton,
+                    scanText);
             return true;
         }
         return false;
     }
 
-    private void scan(String message, CallbackContext callbackContext) {
+    private void scan(String scanInstructions,
+                      int cameraDirection,
+                      int scanOrientation,
+                      boolean scanLine,
+                      boolean scanButton,
+                      String scanText) {
 
         IntentIntegrator integrator = new IntentIntegrator(this.cordova.getActivity());
         integrator.setOrientationLocked(false);
-        integrator.setCaptureActivity(CustomScannerActivity.class);
-        integrator.initiateScan();
 
-        if (message != null && message.length() > 0) {
-            callbackContext.success(message);
-        } else {
-            callbackContext.error("Expected one non-empty string argument.");
+        if (cameraDirection == BACK_CAMERA) {
+            integrator.setCameraId(0);
+        } else if (cameraDirection == FRONT_CAMERA) {
+            integrator.setCameraId(1);
         }
+
+        integrator.setCaptureActivity(CustomScannerActivity.class);
+        integrator.addExtra("SCAN_INSTRUCTIONS", scanInstructions);
+        integrator.addExtra("SCAN_ORIENTATION", scanOrientation);
+        integrator.addExtra("SCAN_LINE", scanLine);
+        integrator.addExtra("SCAN_BUTTON", scanButton);
+        integrator.addExtra("SCAN_TEXT", scanText);
+        integrator.initiateScan();
 
         this.cordova.setActivityResultCallback(this);
     }
