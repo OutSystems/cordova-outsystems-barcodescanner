@@ -17,9 +17,9 @@ CDVInvokedUrlCommand* cdvCommand;
     
     CameraDirection directionEnum;
     
-    if([options.cameraDirection isEqualToString:@"0"]) {
+    if([options.cameraDirection isEqualToString:@"1"]) {
         directionEnum = kBack;
-    } else if([options.cameraDirection isEqualToString:@"1"]){
+    } else if([options.cameraDirection isEqualToString:@"2"]){
         directionEnum = kFront;
     } else {
         CDVPluginResult* pluginResult = [CDVPluginResult resultWithStatus: CDVCommandStatus_ERROR messageAsString:@"Wrong parameter camera direction can only be backCamera or frontCamera. Defaults to backCamera."];
@@ -29,7 +29,7 @@ CDVInvokedUrlCommand* cdvCommand;
     
     ScanOrientation orientationEnum;
     
-    if([options.scanOrientation isEqualToString:@"0"]) {
+    if([options.scanOrientation isEqualToString:@"3"]) {
         orientationEnum = kAdaptive;
     } else if([options.scanOrientation isEqualToString:@"1"]) {
         orientationEnum = kPortrait;

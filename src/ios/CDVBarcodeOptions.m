@@ -29,8 +29,8 @@
         // default values
         self.scanLine = YES;
         self.scanButton = YES;
-        self.cameraDirection = @"0";
-        self.scanOrientation = @"0";
+        self.cameraDirection = @"1";
+        self.scanOrientation = @"3";
         self.scanInstructions = @"";
         self.scanButtonText = @"Scan";
     }
@@ -43,10 +43,10 @@
     CDVBarcodeOptions* obj = [[CDVBarcodeOptions alloc] init];
 
     if([options objectForKey: @"scan_line"] != nil) {
-        obj.scanLine = (BOOL)[options objectForKey: @"scan_line"];
+        obj.scanLine = [(NSNumber*)[options objectForKey: @"scan_line"] boolValue];
     }
     if([options objectForKey: @"scan_button"] != nil) {
-        obj.scanButton = (BOOL)[options objectForKey: @"scan_button"];
+        obj.scanButton = [(NSNumber*)[options objectForKey: @"scan_button"] boolValue];
     }
     if([options objectForKey: @"scan_orientation"] != nil) {
         obj.scanOrientation = (NSString*)[options objectForKey: @"scan_orientation"];
