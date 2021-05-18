@@ -17,8 +17,8 @@ public class OSBarcodeScanner extends CordovaPlugin {
     public final int CUSTOMIZED_REQUEST_CODE = 0x0000ffff;
     static private CallbackContext _callbackContext;
 
-    public static final int BACK_CAMERA = 0;
-    public static final int FRONT_CAMERA = 1;
+    public static final int BACK_CAMERA = 1;
+    public static final int FRONT_CAMERA = 2;
 
     @Override
     public boolean execute(String action, JSONArray args, CallbackContext callbackContext) throws JSONException {
