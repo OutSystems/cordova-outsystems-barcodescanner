@@ -17,9 +17,9 @@ CDVInvokedUrlCommand* cdvCommand;
     
     CameraDirection directionEnum;
     
-    if([options.cameraDirection isEqualToString:@"backCamera"]) {
+    if([options.cameraDirection isEqualToString:@"0"]) {
         directionEnum = kBack;
-    } else if([options.cameraDirection isEqualToString:@"frontCamera"]){
+    } else if([options.cameraDirection isEqualToString:@"1"]){
         directionEnum = kFront;
     } else {
         CDVPluginResult* pluginResult = [CDVPluginResult resultWithStatus: CDVCommandStatus_ERROR messageAsString:@"Wrong parameter camera direction can only be backCamera or frontCamera. Defaults to backCamera."];
@@ -29,11 +29,11 @@ CDVInvokedUrlCommand* cdvCommand;
     
     ScanOrientation orientationEnum;
     
-    if([options.scanOrientation isEqualToString:@"adaptive"]) {
+    if([options.scanOrientation isEqualToString:@"0"]) {
         orientationEnum = kAdaptive;
-    } else if([options.scanOrientation isEqualToString:@"portrait"]) {
+    } else if([options.scanOrientation isEqualToString:@"1"]) {
         orientationEnum = kPortrait;
-    } else if([options.scanOrientation isEqualToString:@"landscape"]) {
+    } else if([options.scanOrientation isEqualToString:@"2"]) {
         orientationEnum = kLandscape;
     } else {
         CDVPluginResult* pluginResult = [CDVPluginResult resultWithStatus: CDVCommandStatus_ERROR messageAsString:@"Wrong parameter scan orientation can only be adaptive, portrait or landscape. Defaults to adaptive."];

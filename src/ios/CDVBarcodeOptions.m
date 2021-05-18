@@ -29,8 +29,8 @@
         // default values
         self.scanLine = YES;
         self.scanButton = YES;
-        self.cameraDirection = @"backCamera";
-        self.scanOrientation = @"portrait";
+        self.cameraDirection = @"0";
+        self.scanOrientation = @"0";
         self.scanInstructions = @"";
         self.scanButtonText = @"Scan";
     }
