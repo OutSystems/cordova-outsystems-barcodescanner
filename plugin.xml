@@ -49,13 +49,34 @@
   </platform>
 
   <platform name="ios">
+
+    <preference name="CAMERA_USAGE_DESCRIPTION" default=" " />
+    <config-file target="*-Info.plist" parent="NSCameraUsageDescription">
+        <string>$CAMERA_USAGE_DESCRIPTION</string>
+    </config-file>
+
     <config-file parent="/*" target="config.xml">
       <feature name="OSBarcodeScanner">
         <param name="ios-package" value="OSBarcodeScanner"/>
       </feature>
     </config-file>
+    <source-file src="src/ios/CDVBarcodeOptions.m"/>
+    <header-file src="src/ios/CDVBarcodeOptions.h"/>
     <source-file src="src/ios/OSBarcodeScanner.m"/>
     <header-file src="src/ios/OSBarcodeScanner.h"/>
+    <source-file src="src/ios/ScannerViewController.m"/>
+    <header-file src="src/ios/ScannerViewController.h"/>
+    <source-file src="src/ios/ScannerViewController.xib"/>
+    <resource-file src="src/ios/BarcodeLocal.xcassets"/>
+    
+    <podspec>
+        <config>
+            <source url="https://cdn.cocoapods.org/"/>
+        </config>
+        <pods>
+            <pod name="ZXingObjC" git="https://github.com/OutSystems/ZXingObjC.git" tag="3.6.4"/>
+        </pods>
+    </podspec>
+    
   </platform>
-
 </plugin>

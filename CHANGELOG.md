@@ -12,6 +12,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Added pipeline configurations to repo (CI folder) [RMET-597](https://outsystemsrd.atlassian.net/browse/RMET-597)
 
 ## 2021-04-26
+- Created ios implementation for plugin [RMET-593](https://outsystemsrd.atlassian.net/browse/RMET-593)
 - Created js layer for plugin [RMET-595](https://outsystemsrd.atlassian.net/browse/RMET-595)
 - Created repository for plugin [RMET-592](https://outsystemsrd.atlassian.net/browse/RMET-592)
 
