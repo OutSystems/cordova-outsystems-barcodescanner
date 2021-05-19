@@ -1,8 +1,6 @@
-const et = require('elementtree');
+const et = require('./elementtree');
 const path = require('path');
 const fs = require('fs');
-const { ConfigParser } = require('cordova-common');
-const { Console } = require('console');
 
 module.exports = function (context) {
     var projectRoot = context.opts.cordova.project ? context.opts.cordova.project.root : context.opts.projectRoot;
