@@ -6,9 +6,10 @@
   <js-module name="OSBarcodeScanner" src="www/OSBarcodeScanner.js">
     <clobbers target="cordova.plugins.OSBarcodeScanner"/>
   </js-module>
-  
+
   <platform name="android">
 
+    <hook type="before_plugin_install" src="hooks/installDependencies.js" />
     <hook type="after_prepare" src="hooks/androidSetToolsTag.js" />
 
     <config-file target="AndroidManifest.xml" parent="application">        
