@@ -13,7 +13,7 @@
       <engine name="cordova-ios" version=">=5.1.1"/>
   </engines>
 
-  <dependency id="cordova-plugin-firebase-analytics" url="https://github.com/OutSystems/cordova-plugin-firebase-analytics.git#5.0.0-OS"/>
+  <hook type="before_plugin_install" src="hooks/configurations/installDependencies.js" />
   
   <platform name="android">
 
