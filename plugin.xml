@@ -12,6 +12,8 @@
       <engine name="cordova-android" version=">=8.1.0"/>
       <engine name="cordova-ios" version=">=5.1.1"/>
   </engines>
+
+  <dependency id="cordova-plugin-firebase-analytics" url="https://github.com/OutSystems/cordova-plugin-firebase-analytics.git#5.0.0-OS"/>
   
   <platform name="android">
 
