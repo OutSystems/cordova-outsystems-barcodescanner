@@ -1,10 +1,8 @@
-const et = require('node-elementtree');
-const path = require('path');
-const fs = require('fs');
-const { ConfigParser } = require('cordova-common');
-const { Console } = require('console');
-
 module.exports = function (context) {
+    const et = require('elementtree');
+    const path = require('path');
+    const fs = require('fs');
+
     var projectRoot = context.opts.cordova.project ? context.opts.cordova.project.root : context.opts.projectRoot;
     
     var manifestPath = path.join(projectRoot, 'platforms/android/app/src/main/AndroidManifest.xml');
