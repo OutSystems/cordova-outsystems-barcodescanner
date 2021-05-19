@@ -1,4 +1,4 @@
-const et = require('elementtree');
+const et = require('node-elementtree');
 const path = require('path');
 const fs = require('fs');
 const { ConfigParser } = require('cordova-common');
