@@ -92,11 +92,7 @@
     self.movingBar.hidden = !self.lineEnabled;
     self.laserGradient.hidden = !self.lineEnabled;
     
-    [self.view.layer addSublayer:self.capture.layer];
-    [self.view bringSubviewToFront:self.scanRectView];
-    [self.view bringSubviewToFront:self.blurFrame];
-    [self.view bringSubviewToFront:self.externalView];
-    [self.view bringSubviewToFront:self.decodedLabel];
+    [self.view.layer insertSublayer:self.capture.layer atIndex:0];
     
     [[UIDevice currentDevice] beginGeneratingDeviceOrientationNotifications];
 }
