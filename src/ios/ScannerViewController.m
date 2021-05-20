@@ -235,7 +235,7 @@
 - (void)applyRectOfInterest:(UIInterfaceOrientation)orientation {
     CGFloat scaleVideoX, scaleVideoY;
     CGFloat videoSizeX, videoSizeY;
-    CGRect transformedVideoRect = self.scanRectView.frame;
+    CGRect transformedVideoRect = [self.view convertRect:self.scanRectView.frame fromView:self.scanRectView.superview];
     if([self.capture.sessionPreset isEqualToString:AVCaptureSessionPreset1920x1080]) {
         videoSizeX = 1080;
         videoSizeY = 1920;
