@@ -84,7 +84,6 @@
     
     self.scanning = NO;
     
-    self.scanButton.layer.cornerRadius = 30;
     self.scanButton.clipsToBounds = YES;
     self.scanButton.imageView.contentMode = UIViewContentModeScaleAspectFill;
     self.scanButton.titleLabel.text = self.scanButtonTitle;
@@ -123,6 +122,7 @@
 
 - (void)viewDidLayoutSubviews {
     [super viewDidLayoutSubviews];
+    self.scanButton.layer.cornerRadius = self.scanButton.bounds.size.height / 2;
 }
 
 -(UIInterfaceOrientationMask)supportedInterfaceOrientations{
@@ -330,7 +330,7 @@
 #pragma mark - ZXCaptureDelegate Methods
 
 - (void)captureCameraIsReady:(ZXCapture *)capture {
-    //  self.scanning = YES;
+    self.scanning = !self.scanButtonEnabled;
 }
 
 - (void)captureResult:(ZXCapture *)capture result:(ZXResult *)result {
@@ -371,19 +371,14 @@
 }
 
 - (IBAction)closeBtnPressed:(id)sender {
-    //    [self dismissViewControllerAnimated:true completion:nil];
     [self dissmissVC:@"User closed before getting a result"];
 }
 
 - (IBAction)scanBtnPressed:(id)sender {
     // Vibrate
     AudioServicesPlaySystemSound(kSystemSoundID_Vibrate);
-    self.scanning = !self.scanning;
-    //    if (self.scanning) {
-    //        self.scanButton.backgroundColor = [UIColor darkGrayColor];
-    //    } else {
-    //        self.scanButton.backgroundColor = [UIColor lightGrayColor];
-    //    }
+    if(self.scanning) { return; }
+    self.scanning = YES;
 }
 
 - (IBAction)flashBtnPressed:(id)sender {

@@ -73,14 +73,7 @@
     <source-file src="src/ios/ScannerViewController.xib"/>
     <resource-file src="src/ios/BarcodeLocal.xcassets"/>
     
-    <podspec>
-        <config>
-            <source url="https://cdn.cocoapods.org/"/>
-        </config>
-        <pods>
-            <pod name="ZXingObjC" git="https://github.com/OutSystems/ZXingObjC.git" tag="3.6.4"/>
-        </pods>
-    </podspec>
+    <framework src="ZXingObjC" type="podspec" spec=":git => 'https://github.com/OutSystems/ZXingObjC.git', :tag => '3.6.4'"/>
     
   </platform>
 </plugin>
