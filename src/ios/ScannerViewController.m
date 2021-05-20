@@ -326,7 +326,7 @@
 #pragma mark - ZXCaptureDelegate Methods
 
 - (void)captureCameraIsReady:(ZXCapture *)capture {
-    self.scanning = !self.scanButtonEnabled;
+    self.scanning = self.scanButtonEnabled ? self.scanning : YES;
 }
 
 - (void)captureResult:(ZXCapture *)capture result:(ZXResult *)result {
@@ -373,8 +373,7 @@
 - (IBAction)scanBtnPressed:(id)sender {
     // Vibrate
     AudioServicesPlaySystemSound(kSystemSoundID_Vibrate);
-    if(self.scanning) { return; }
-    self.scanning = YES;
+    self.scanning = !self.scanning;
 }
 
 - (IBAction)flashBtnPressed:(id)sender {
