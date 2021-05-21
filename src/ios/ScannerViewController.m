@@ -105,15 +105,13 @@
 - (void)viewWillAppear:(BOOL)animated {
     [super viewWillAppear:animated];
     _laserGradient.hidden = false;
-    UIInterfaceOrientation orientation = [[UIApplication sharedApplication] statusBarOrientation];
     CGFloat captureRotation = [self getCaptureRotation];
     CGFloat scanRectRotation = [self getScanRotation];
     self.capture.layer.bounds = self.view.bounds;
     self.capture.rotation = scanRectRotation;
     CGAffineTransform transform = CGAffineTransformMakeRotation((CGFloat)(captureRotation / 180 * M_PI));
-    
     [self.capture setTransform:transform];
-    [self applyRectOfInterest:orientation];
+    [self applyRectOfInterest];
 }
 
 - (void)viewDidLayoutSubviews {
@@ -183,19 +181,18 @@
         [weakSelf applyOrientation:context.transitionDuration];
     } completion:^(id<UIViewControllerTransitionCoordinatorContext> context)
      {
+        [weakSelf applyRectOfInterest];
         [self animateMovingBar];
     }];
 }
 
 #pragma mark - Private
 - (void)applyOrientation:(CGFloat)animationTime {
-    UIInterfaceOrientation orientation = [[UIApplication sharedApplication] statusBarOrientation];
     CGFloat captureRotation = [self getCaptureRotation];
     __weak ScannerViewController* weakSelf = self;
     [UIView animateWithDuration:animationTime animations:^{
         CGAffineTransform transform = CGAffineTransformMakeRotation((CGFloat)(captureRotation / 180 * M_PI));
         [weakSelf.capture setTransform:transform];
-        [weakSelf applyRectOfInterest:orientation];
         weakSelf.gradient.frame = weakSelf.laserGradient.bounds;
     }];
 }
@@ -232,7 +229,8 @@
     }
 }
 
-- (void)applyRectOfInterest:(UIInterfaceOrientation)orientation {
+- (void)applyRectOfInterest {
+    UIInterfaceOrientation orientation = [[UIApplication sharedApplication] statusBarOrientation];
     CGFloat scaleVideoX, scaleVideoY;
     CGFloat videoSizeX, videoSizeY;
     CGRect transformedVideoRect = [self.view convertRect:self.scanRectView.frame fromView:self.scanRectView.superview];
@@ -258,11 +256,21 @@
     } else {
         scaleVideoX = self.capture.layer.frame.size.width / videoSizeY;
         scaleVideoY = self.capture.layer.frame.size.height / videoSizeX;
+        
+        // Convert CGPoint under portrait mode to map with orientation of image
+        // because the image will be cropped before rotate
+        // reference: https://github.com/TheLevelUp/ZXingObjC/issues/222
+        CGFloat realX = transformedVideoRect.origin.x;
+        CGFloat realY = self.capture.layer.frame.size.height - transformedVideoRect.size.height - transformedVideoRect.origin.y;
+        CGFloat realWidth = transformedVideoRect.size.width;
+        CGFloat realHeight = transformedVideoRect.size.height;
+        transformedVideoRect = CGRectMake(realX, realY, realWidth, realHeight);
     }
     
     _captureSizeTransform = CGAffineTransformMakeScale(1.0/scaleVideoX, 1.0/scaleVideoY);
     self.capture.scanRect = [[UIScreen mainScreen] bounds];
-    self.capture.scanRect = CGRectApplyAffineTransform(transformedVideoRect, _captureSizeTransform);
+    CGRect rct = CGRectApplyAffineTransform(transformedVideoRect, _captureSizeTransform);
+    self.capture.scanRect = rct;
     self.capture.layer.frame = UIScreen.mainScreen.bounds;
 }
 
