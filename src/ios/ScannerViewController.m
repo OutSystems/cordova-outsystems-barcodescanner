@@ -16,6 +16,7 @@
 @property (nonatomic, weak) IBOutlet UIView *movingBar;
 @property (nonatomic, weak) IBOutlet UIView *scanRectView;
 @property (nonatomic, weak) IBOutlet UILabel *decodedLabel;
+@property (nonatomic, weak) UIView *captureView;
 @property (nonatomic, weak) CAGradientLayer *gradient;
 @property (nonatomic) BOOL scanning;
 @property (nonatomic) BOOL isFirstApplyOrientation;
@@ -36,7 +37,7 @@
 #pragma mark - View Controller Methods
 
 -(instancetype)initWithScanInstructions:(NSString *)instructions CameraDirection:(CameraDirection)direction ScanOrientation:(ScanOrientation)orientation ScanLine:(bool)lineEnabled ScanButtonEnabled:(bool)buttonEnabled ScanButton:(NSString *)buttonTitle {
-    self = [super initWithNibName:@"ScannerViewController" bundle:nil];
+    self = [super initWithNibName:nil bundle:nil];
     self.instructionsText = instructions;
     self.scanButtonTitle = buttonTitle;
     self.direction = direction;
@@ -84,6 +85,7 @@
     
     self.scanning = NO;
     
+    self.scanButton.layer.cornerRadius = 30;
     self.scanButton.clipsToBounds = YES;
     self.scanButton.imageView.contentMode = UIViewContentModeScaleAspectFill;
     self.scanButton.titleLabel.text = self.scanButtonTitle;
@@ -92,31 +94,46 @@
     self.movingBar.hidden = !self.lineEnabled;
     self.laserGradient.hidden = !self.lineEnabled;
     
-    [self.view.layer insertSublayer:self.capture.layer atIndex:0];
+    self.view.backgroundColor = UIColor.blackColor;
+    
+    UIView* cap = [[UIView alloc] init];
+    [cap setTranslatesAutoresizingMaskIntoConstraints:false];
+    [self.view addSubview:cap];
+    [[cap.topAnchor constraintEqualToAnchor:self.view.topAnchor] setActive:YES];
+    [[cap.bottomAnchor constraintEqualToAnchor:self.view.bottomAnchor] setActive:YES];
+    [[cap.rightAnchor constraintEqualToAnchor:self.view.rightAnchor] setActive:YES];
+    [[cap.leftAnchor constraintEqualToAnchor:self.view.leftAnchor] setActive:YES];
+    [cap.layer addSublayer:self.capture.layer];
+    
+    [self.view sendSubviewToBack:cap];
+    self.captureView = cap;
     
     [[UIDevice currentDevice] beginGeneratingDeviceOrientationNotifications];
 }
 
 - (void)viewDidAppear:(BOOL)animated{
+    [super viewDidAppear:animated];
+    
+    self.capture.layer.frame = self.view.bounds;
+    
+    CGFloat scanRectRotation = [self getScanRotation];
+    self.capture.rotation = scanRectRotation;
+   
+    self.capture.layer.frame = self.view.bounds;
+    
+    UIInterfaceOrientation orientation = [[UIApplication sharedApplication] statusBarOrientation];
+    [self applyRectOfInterest:orientation];
     [self addGradientToView];
     [self animateMovingBar];
 }
 
 - (void)viewWillAppear:(BOOL)animated {
     [super viewWillAppear:animated];
-    _laserGradient.hidden = false;
     CGFloat captureRotation = [self getCaptureRotation];
-    CGFloat scanRectRotation = [self getScanRotation];
-    self.capture.layer.bounds = self.view.bounds;
-    self.capture.rotation = scanRectRotation;
     CGAffineTransform transform = CGAffineTransformMakeRotation((CGFloat)(captureRotation / 180 * M_PI));
     [self.capture setTransform:transform];
-    [self applyRectOfInterest];
-}
-
-- (void)viewDidLayoutSubviews {
-    [super viewDidLayoutSubviews];
-    self.scanButton.layer.cornerRadius = self.scanButton.bounds.size.height / 2;
+    self.capture.layer.frame = UIScreen.mainScreen.bounds;
+    _laserGradient.hidden = false;
 }
 
 -(UIInterfaceOrientationMask)supportedInterfaceOrientations{
@@ -167,7 +184,6 @@
     NSArray* goingUpDrag = @[@0.5, @0.5, @0.65, @1.0];
     keyAnimation.values = @[fromValues, goingDownDrag, fromValues, goingUpDrag, fromValues];
     keyAnimation.keyTimes = @[@0.0, @0.3, @0.5, @0.8, @1.0];
-    //keyAnimation.timingFunction = [CAMediaTimingFunction functionWithName:kCAMediaTimingFunctionEaseOut];
     keyAnimation.repeatCount = HUGE_VAL;
     [self.gradient addAnimation:keyAnimation forKey:@"locations"];
     [CATransaction commit];
@@ -181,8 +197,9 @@
         [weakSelf applyOrientation:context.transitionDuration];
     } completion:^(id<UIViewControllerTransitionCoordinatorContext> context)
      {
-        [weakSelf applyRectOfInterest];
-        [self animateMovingBar];
+        UIInterfaceOrientation orientation = [[UIApplication sharedApplication] statusBarOrientation];
+        [weakSelf applyRectOfInterest:orientation];
+        [weakSelf animateMovingBar];
     }];
 }
 
@@ -193,6 +210,7 @@
     [UIView animateWithDuration:animationTime animations:^{
         CGAffineTransform transform = CGAffineTransformMakeRotation((CGFloat)(captureRotation / 180 * M_PI));
         [weakSelf.capture setTransform:transform];
+        weakSelf.capture.layer.frame = weakSelf.view.bounds;
         weakSelf.gradient.frame = weakSelf.laserGradient.bounds;
     }];
 }
@@ -229,49 +247,22 @@
     }
 }
 
-- (void)applyRectOfInterest {
-    UIInterfaceOrientation orientation = [[UIApplication sharedApplication] statusBarOrientation];
-    CGFloat scaleVideoX, scaleVideoY;
-    CGFloat videoSizeX, videoSizeY;
+- (void)applyRectOfInterest:(UIInterfaceOrientation)orientation {
     CGRect transformedVideoRect = [self.view convertRect:self.scanRectView.frame fromView:self.scanRectView.superview];
-    if([self.capture.sessionPreset isEqualToString:AVCaptureSessionPreset1920x1080]) {
-        videoSizeX = 1080;
-        videoSizeY = 1920;
-    } else {
-        videoSizeX = 720;
-        videoSizeY = 1280;
-    }
-    if(UIInterfaceOrientationIsPortrait(orientation)) {
-        scaleVideoX = self.capture.layer.frame.size.width / videoSizeX;
-        scaleVideoY = self.capture.layer.frame.size.height / videoSizeY;
-        
+    if(UIInterfaceOrientationIsLandscape(orientation)) {
         // Convert CGPoint under portrait mode to map with orientation of image
         // because the image will be cropped before rotate
         // reference: https://github.com/TheLevelUp/ZXingObjC/issues/222
         CGFloat realX = transformedVideoRect.origin.y;
-        CGFloat realY = self.capture.layer.frame.size.width - transformedVideoRect.size.width - transformedVideoRect.origin.x;
+        CGFloat realY = transformedVideoRect.origin.x;
         CGFloat realWidth = transformedVideoRect.size.height;
         CGFloat realHeight = transformedVideoRect.size.width;
         transformedVideoRect = CGRectMake(realX, realY, realWidth, realHeight);
-    } else {
-        scaleVideoX = self.capture.layer.frame.size.width / videoSizeY;
-        scaleVideoY = self.capture.layer.frame.size.height / videoSizeX;
-        
-        // Convert CGPoint under portrait mode to map with orientation of image
-        // because the image will be cropped before rotate
-        // reference: https://github.com/TheLevelUp/ZXingObjC/issues/222
-        CGFloat realX = transformedVideoRect.origin.x;
-        CGFloat realY = self.capture.layer.frame.size.height - transformedVideoRect.size.height - transformedVideoRect.origin.y;
-        CGFloat realWidth = transformedVideoRect.size.width;
-        CGFloat realHeight = transformedVideoRect.size.height;
-        transformedVideoRect = CGRectMake(realX, realY, realWidth, realHeight);
     }
     
-    _captureSizeTransform = CGAffineTransformMakeScale(1.0/scaleVideoX, 1.0/scaleVideoY);
-    self.capture.scanRect = [[UIScreen mainScreen] bounds];
-    CGRect rct = CGRectApplyAffineTransform(transformedVideoRect, _captureSizeTransform);
-    self.capture.scanRect = rct;
-    self.capture.layer.frame = UIScreen.mainScreen.bounds;
+    CGRect outputRect = [(AVCaptureVideoPreviewLayer*) self.capture.layer metadataOutputRectOfInterestForRect:transformedVideoRect];
+    CGRect rectOfInterest = [self.capture.output rectForMetadataOutputRectOfInterest:outputRect];
+    self.capture.scanRect = rectOfInterest;
 }
 
 #pragma mark - Private Methods
@@ -359,7 +350,6 @@
     }
     
     // Display information about the result onscreen.
-    //  NSString *formatString = [self barcodeFormatToString:result.barcodeFormat];
     NSString *display = [NSString stringWithFormat:@"Scanned!\nContents:%@", result.text];
     [self.decodedLabel performSelectorOnMainThread:@selector(setText:) withObject:display waitUntilDone:YES];
     
@@ -367,11 +357,6 @@
     AudioServicesPlaySystemSound(kSystemSoundID_Vibrate);
     
     [self dissmissVC: result.text];
-    
-    //  dispatch_after(dispatch_time(DISPATCH_TIME_NOW, 2 * NSEC_PER_SEC), dispatch_get_main_queue(), ^{
-    //    self.scanning = YES;
-    //    [self.capture start];
-    //  });
 }
 
 - (IBAction)closeBtnPressed:(id)sender {
