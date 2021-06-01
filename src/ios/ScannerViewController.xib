@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="17701" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" colorMatched="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="18122" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" colorMatched="YES">
     <device id="retina6_1" orientation="portrait" appearance="light"/>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="17703"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="18093"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <objects>
@@ -17,8 +17,8 @@
                 <outlet property="movingBar" destination="WRE-L5-r00" id="CUd-8E-gq6"/>
                 <outlet property="movingBarTopConstraint" destination="lM3-dk-lGn" id="FMh-wl-wd0"/>
                 <outlet property="scanButton" destination="5m8-an-awu" id="peF-JC-MnN"/>
-                <outlet property="scanRectView" destination="Uhe-Ex-pCt" id="ojD-zm-r9G"/>
-                <outlet property="view" destination="6" id="7"/>
+                <outlet property="scanRectView" destination="Uhe-Ex-pCt" id="9Sj-a0-U42"/>
+                <outlet property="view" destination="6" id="QS0-hz-JPw"/>
             </connections>
         </placeholder>
         <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
