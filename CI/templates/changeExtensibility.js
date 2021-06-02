@@ -42,18 +42,24 @@ lifeTimeRequest.setRequestHeader("Authorization", basicAuthentication);
 lifeTimeRequest.setRequestHeader("Content-Type", "application/json");
 lifeTimeRequest.send();
 
+var lifeTimeResponse;
+
 if(lifeTimeRequest.status == 200) {
     var response = lifeTimeRequest.responseText;
     console.log("response: " + response);
-    var lifeTimeResponse = JSON.parse(response);
+    lifeTimeResponse = JSON.parse(response);
     console.log("lifeTimeResponse: " + lifeTimeResponse);
 } else {
     throw new Error("Network Error:" + JSON.stringify(lifeTimeRequest));
 }
 
+console.log("lifeTimeResponse plugin name: " + lifeTimeResponse.PluginName);
+console.log("lifeTimeResponse plugin version: " + lifeTimeResponse.PluginVersion);
+
+
 extensibilityChangeJson.plugin.url = repository+"#"+branch;
-extensibilityChangeJson.plugin.pluginName = lifeTimeResponse.pluginName;
-extensibilityChangeJson.plugin.pluginVersion = lifeTimeResponse.pluginVersion;
+extensibilityChangeJson.plugin.pluginName = lifeTimeResponse.PluginName;
+extensibilityChangeJson.plugin.pluginVersion = lifeTimeResponse.PluginVersion;
 
 var extensibilityChangeString = JSON.stringify(extensibilityChangeJson);
 var buffer = new Buffer.from(extensibilityChangeString);
