@@ -46,7 +46,7 @@ if(lifeTimeRequest.status == 200) {
     var response = lifeTimeRequest.response;
     var lifeTimeResponse = JSON.parse(response);
 } else {
-    throw new Error("Network Error:" + JSON.stringify(lifeTimeResponse.response));
+    throw new Error("Network Error:" + JSON.stringify(lifeTimeRequest));
 }
 
 extensibilityChangeJson.plugin.url = repository+"#"+branch;
