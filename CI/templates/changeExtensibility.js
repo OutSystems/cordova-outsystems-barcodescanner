@@ -28,7 +28,7 @@ var branch = process.env.npm_config_branch;
 var environment = process.env.npm_config_environment;
 var moduleName = configurations.moduleName ;
 var basicAuthentication = process.env.npm_config_authentication;
-var pluginName = configurations.lifetimeVersion.ApplicationName;
+var pluginName = configurations.lifetimeVersion.applicationName;
 var lifeTimeEnvironment = process.env.npm_config_versionLifeTimeEnvironment; 
 
 var url = "https://" + environment + "/CodeUpdater/rest/Bulk/ExtensabilityUpdate";
