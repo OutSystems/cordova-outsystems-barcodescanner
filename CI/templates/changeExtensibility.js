@@ -36,17 +36,17 @@ var url = "https://" + environment + "/CodeUpdater/rest/Bulk/ExtensabilityUpdate
 var query = "?Environment=" + lifeTimeEnvironment + "&+ApplicationName=" + pluginName;
 var newVersionURL = "https://" + environment + "/PipelineAPI/rest/Bulk/getApplicationNewVersion" + query;
 
-var lifeTimerequest = new XMLHttpRequest();
-lifeTimerequest.open("GET", newVersionURL, false);
-lifeTimerequest.setRequestHeader("Authorization", basicAuthentication);
-lifeTimerequest.setRequestHeader("Content-Type", "application/json");
-lifeTimerequest.send();
+var lifeTimeRequest = new XMLHttpRequest();
+lifeTimeRequest.open("GET", newVersionURL, false);
+lifeTimeRequest.setRequestHeader("Authorization", basicAuthentication);
+lifeTimeRequest.setRequestHeader("Content-Type", "application/json");
+lifeTimeRequest.send();
 
-if(request.status == 200) {
-    var response = lifeTimerequest.response;
+if(lifeTimeRequest.status == 200) {
+    var response = lifeTimeRequest.response;
     var lifeTimeResponse = JSON.parse(response);
 } else {
-    throw new Error("Network Error:" + JSON.stringify(lifeTimerequest.response));
+    throw new Error("Network Error:" + JSON.stringify(lifeTimeResponse.response));
 }
 
 extensibilityChangeJson.plugin.url = repository+"#"+branch;
