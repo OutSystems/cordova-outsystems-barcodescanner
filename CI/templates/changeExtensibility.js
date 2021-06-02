@@ -36,6 +36,8 @@ var url = "https://" + environment + "/CodeUpdater/rest/Bulk/ExtensabilityUpdate
 var query = "?Environment=" + lifeTimeEnvironment + "&ApplicationName=" + pluginName;
 var newVersionURL = "https://" + environment + "/PipelineAPI/rest/Bulk/getApplicationNewVersion" + query;
 
+console.log(newVersionURL);
+
 var lifeTimeRequest = new XMLHttpRequest();
 lifeTimeRequest.open("GET", newVersionURL, false);
 lifeTimeRequest.setRequestHeader("Authorization", basicAuthentication);
