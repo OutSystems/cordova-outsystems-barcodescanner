@@ -43,10 +43,10 @@ lifeTimeRequest.setRequestHeader("Content-Type", "application/json");
 lifeTimeRequest.send();
 
 if(lifeTimeRequest.status == 200) {
-    var response = lifeTimeRequest.response;
+    var response = lifeTimeRequest.responseText;
     console.log("response: " + response);
-    //var lifeTimeResponse = JSON.parse(response);
-    //console.log("lifeTimeResponse: " + lifeTimeResponse);
+    var lifeTimeResponse = JSON.parse(response);
+    console.log("lifeTimeResponse: " + lifeTimeResponse);
 } else {
     throw new Error("Network Error:" + JSON.stringify(lifeTimeRequest));
 }
