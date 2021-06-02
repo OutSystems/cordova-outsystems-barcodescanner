@@ -1,11 +1,11 @@
 {
-    "moduleName": "OSBarcodeScannerPlugin",
+    "moduleName": "BarcodePlugin",
     "applicationNames": [
-        "OSBarcodeScannerPlugin",
+        "BarcodePlugin",
         "OSBarcodeScannerSampleApp"
     ],
     "lifetimeVersion": {
-        "applicationName": "OSBarcodeScannerPlugin"
+        "applicationName": "BarcodePlugin"
     },
     "testPipelineArgs": {
         "plugin": "<--- Insert plugin name as it is in UI Test pipeline Variable --->",
