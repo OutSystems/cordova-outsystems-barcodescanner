@@ -33,7 +33,7 @@ var lifeTimeEnvironment = process.env.npm_config_versionLifeTimeEnvironment;
 
 var url = "https://" + environment + "/CodeUpdater/rest/Bulk/ExtensabilityUpdate";
 
-var query = "?Environment=" + lifeTimeEnvironment + "&+ApplicationName=" + pluginName;
+var query = "?Environment=" + lifeTimeEnvironment + "&ApplicationName=" + pluginName;
 var newVersionURL = "https://" + environment + "/PipelineAPI/rest/Bulk/getApplicationNewVersion" + query;
 
 var lifeTimeRequest = new XMLHttpRequest();
