@@ -1,16 +1,20 @@
 {
-    "moduleName": "BarcodePlugin",
+    "moduleName": "OSBarcodeScannerPlugin",
     "applicationNames": [
-        "BarcodePlugin",
-        "BarcodeSampleApp"
+        "OSBarcodeScannerPlugin",
+        "OSBarcodeScannerSampleApp"
     ],
+    "lifetimeVersion": {
+        "applicationName": "OSBarcodeScannerPlugin"
+    },
     "testPipelineArgs": {
-        "plugin": "",
+        "plugin": "<--- Insert plugin name as it is in UI Test pipeline Variable --->",
         "threads": "3"
     },
     "sauceLabsInfo": {
-        "BarcodeSampleApp": {
-            "iosAPIKey": "7819856977554EE5805CFB5CA170AE72"
+        "OSBarcodeScannerSampleApp": {
+            "androidAPIKey": "<--- Insert android sauce labs key here --->",
+            "iosAPIKey": "<--- Insert ios sauce labs key here --->"
         }
     }
 }

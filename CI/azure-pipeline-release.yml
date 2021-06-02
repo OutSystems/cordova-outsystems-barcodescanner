@@ -34,13 +34,14 @@ stages:
     parameters:
       environment: 'enmobile11-dev.outsystemsenterprise.com'
       basicAuthentication: $(basicAuth)
-  - template: 'templates/deployment-build-stage.yml'
-    parameters:
-      fromEnvironment: 'Development'
-      toEnvironment: 'Testing'
-      basicAuthentication: $(basicAuth)
-      pipelineURL: $(pipelineURL)
-      destinationFolder: $(destinationFolder)
-      runID: $(Build.BuildID)
-      sauceLabsUser: $(sauceLabsUser)
-  - template: 'templates/pipeline-run-stage.yml'
+      versionLifeTimeEnvironment: 'Development'
+#  - template: 'templates/deployment-build-stage.yml'
+#    parameters:
+#      fromEnvironment: 'Development'
+#      toEnvironment: 'Testing'
+#      basicAuthentication: $(basicAuth)
+#      pipelineURL: $(pipelineURL)
+#      destinationFolder: $(destinationFolder)
+#      runID: $(Build.BuildID)
+#      sauceLabsUser: $(sauceLabsUser)
+#  - template: 'templates/pipeline-run-stage.yml'

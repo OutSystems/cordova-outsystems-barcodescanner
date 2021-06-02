@@ -12,12 +12,15 @@ if(process.env.npm_config_authentication == null) {
     throw new Error("Missing authentication argument");
 }
 
+if(process.env.npm_config_versionLifeTimeEnvironment == null) {
+    throw new Error("Missing lifetime environment argument");
+}
+
 var extensibilityChangeJson = readJSONFile("extensibilityConfiguration.json");
 
 if(extensibilityChangeJson == null) {
     throw new Error("Missing extensibilityConfiguration.json file");
 }
-
 var XMLHttpRequest = require("xmlhttprequest").XMLHttpRequest;
 
 var repository = process.env.npm_config_repositoryURL;
@@ -25,10 +28,30 @@ var branch = process.env.npm_config_branch;
 var environment = process.env.npm_config_environment;
 var moduleName = configurations.moduleName ;
 var basicAuthentication = process.env.npm_config_authentication;
+var pluginName = configurations.lifetimeVersion.ApplicationName;
+var lifeTimeEnvironment = process.env.npm_config_versionLifeTimeEnvironment; 
 
 var url = "https://" + environment + "/CodeUpdater/rest/Bulk/ExtensabilityUpdate";
 
+var query = "?Environment=" + lifeTimeEnvironment + "&+ApplicationName=" + pluginName;
+var newVersionURL = "https://" + environment + "/PipelineAPI/rest/Bulk/getApplicationNewVersion" + query;
+
+var lifeTimerequest = new XMLHttpRequest();
+lifeTimerequest.open("GET", newVersionURL, false);
+lifeTimerequest.setRequestHeader("Authorization", basicAuthentication);
+lifeTimerequest.setRequestHeader("Content-Type", "application/json");
+lifeTimerequest.send();
+
+if(request.status == 200) {
+    var response = lifeTimerequest.response;
+    var lifeTimeResponse = JSON.parse(response);
+} else {
+    throw new Error("Network Error:" + JSON.stringify(lifeTimerequest.response));
+}
+
 extensibilityChangeJson.plugin.url = repository+"#"+branch;
+extensibilityChangeJson.plugin.pluginName = lifeTimeResponse.pluginName;
+extensibilityChangeJson.plugin.pluginVersion = lifeTimeResponse.pluginVersion;
 
 var extensibilityChangeString = JSON.stringify(extensibilityChangeJson);
 var buffer = new Buffer.from(extensibilityChangeString);

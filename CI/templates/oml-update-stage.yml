@@ -6,7 +6,9 @@ parameters:
 - name: basicAuthentication
   type: string
   default: null
-
+- name: versionLifeTimeEnvironment
+  type: string
+  default: ''
 
 stages:
   - stage: OMLUpdate
@@ -19,5 +21,5 @@ stages:
           - template: 'npm-steps.yml'
             parameters:
               workingDirectory: 'CI/templates'
-          - script: 'npm start --environment=${{ parameters.environment }} --repositoryURL=$(Build.Repository.Uri) --branch=$(Build.SourceBranchName) --authentication="${{ parameters.basicAuthentication }}"'
+          - script: 'npm start --versionLifeTimeEnvironment=${{ parameters.versionLifeTimeEnvironment }} --environment=${{ parameters.environment }} --repositoryURL=$(Build.Repository.Uri) --branch=$(Build.SourceBranchName) --authentication="${{ parameters.basicAuthentication }}"'
             workingDirectory: 'CI/templates'
