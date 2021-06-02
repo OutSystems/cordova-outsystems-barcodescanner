@@ -36,8 +36,6 @@ var url = "https://" + environment + "/CodeUpdater/rest/Bulk/ExtensabilityUpdate
 var query = "?Environment=" + lifeTimeEnvironment + "&ApplicationName=" + pluginName;
 var newVersionURL = "https://" + environment + "/PipelineAPI/rest/Bulk/getApplicationNewVersion" + query;
 
-console.log(newVersionURL);
-
 var lifeTimeRequest = new XMLHttpRequest();
 lifeTimeRequest.open("GET", newVersionURL, false);
 lifeTimeRequest.setRequestHeader("Authorization", basicAuthentication);
@@ -47,6 +45,7 @@ lifeTimeRequest.send();
 if(lifeTimeRequest.status == 200) {
     var response = lifeTimeRequest.response;
     var lifeTimeResponse = JSON.parse(response);
+    console.log("lifeTimeResponse: " + lifeTimeResponse);
 } else {
     throw new Error("Network Error:" + JSON.stringify(lifeTimeRequest));
 }
