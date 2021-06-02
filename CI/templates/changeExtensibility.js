@@ -46,16 +46,10 @@ var lifeTimeResponse;
 
 if(lifeTimeRequest.status == 200) {
     var response = lifeTimeRequest.responseText;
-    console.log("response: " + response);
     lifeTimeResponse = JSON.parse(response);
-    console.log("lifeTimeResponse: " + lifeTimeResponse);
 } else {
     throw new Error("Network Error:" + JSON.stringify(lifeTimeRequest));
 }
-
-console.log("lifeTimeResponse plugin name: " + lifeTimeResponse.PluginName);
-console.log("lifeTimeResponse plugin version: " + lifeTimeResponse.PluginVersion);
-
 
 extensibilityChangeJson.plugin.url = repository+"#"+branch;
 extensibilityChangeJson.plugin.pluginName = lifeTimeResponse.PluginName;
@@ -74,7 +68,6 @@ console.log(
     "Started changing extensibility in module " + moduleName + 
     ".\n -- Extensibility will be configured to: " + repository+"#"+branch +
     "\nin environment:" + environment
-
 );
 
 var request = new XMLHttpRequest();
