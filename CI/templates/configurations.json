@@ -4,6 +4,9 @@
         "BarcodePlugin",
         "BarcodeSampleApp"
     ],
+    "lifetimeVersion": {
+        "applicationName": "BarcodePlugin"
+    },
     "testPipelineArgs": {
         "plugin": "",
         "threads": "3"
