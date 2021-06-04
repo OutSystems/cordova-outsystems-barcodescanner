@@ -31,6 +31,8 @@ var basicAuthentication = process.env.npm_config_authentication;
 var pluginName = configurations.lifetimeVersion.applicationName;
 var lifeTimeEnvironment = process.env.npm_config_versionLifeTimeEnvironment; 
 
+console.log("pluginName: " + pluginName);
+
 var url = "https://" + environment + "/CodeUpdater/rest/Bulk/ExtensabilityUpdate";
 
 var query = "?Environment=" + lifeTimeEnvironment + "&ApplicationName=" + pluginName;
