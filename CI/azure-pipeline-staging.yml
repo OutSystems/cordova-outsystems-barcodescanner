@@ -11,6 +11,7 @@ name: 'Staging'
 
 pr: none
 trigger:
+  - master
   - main
   - outsystems
 

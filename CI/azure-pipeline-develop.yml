@@ -5,7 +5,7 @@ pr:
   autoCancel: true
   branches:
     include:
-    - main
+    - master
     - outsystems
 
 stages:

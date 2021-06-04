@@ -1,5 +1,7 @@
 {
     "plugin": {
-        "url":""
+        "url":"",
+        "pluginName":"",
+        "pluginVersion":""
     }
 }
