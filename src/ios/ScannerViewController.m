@@ -85,7 +85,7 @@
     
     self.scanning = NO;
     
-    self.scanButton.layer.cornerRadius = 30;
+    self.scanButton.layer.cornerRadius = 25;
     self.scanButton.clipsToBounds = YES;
     self.scanButton.imageView.contentMode = UIViewContentModeScaleAspectFill;
     [self.scanButton setTitle:self.scanButtonTitle forState:UIControlStateNormal];
