@@ -88,7 +88,7 @@
     self.scanButton.layer.cornerRadius = 30;
     self.scanButton.clipsToBounds = YES;
     self.scanButton.imageView.contentMode = UIViewContentModeScaleAspectFill;
-    self.scanButton.titleLabel.text = self.scanButtonTitle;
+    [self.scanButton setTitle:self.scanButtonTitle forState:UIControlStateNormal];
     self.scanButton.hidden = !self.scanButtonEnabled;
     
     self.movingBar.hidden = !self.lineEnabled;
