@@ -32,6 +32,7 @@ stages:
       platforms: ['all'] # Platforms to test for, it can be 'all' to test all ('ios', 'js', 'android')
   - template: 'templates/oml-update-stage.yml'
     parameters:
+      versionLifeTimeEnvironment: 'Development'
       environment: 'enmobile11-dev.outsystemsenterprise.com'
       basicAuthentication: $(basicAuth)
   - template: 'templates/deployment-build-stage.yml'
