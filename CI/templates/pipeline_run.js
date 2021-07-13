@@ -55,7 +55,6 @@ async function executePipeline(androidAppID, iosAppID, plugin, androidVersion, i
             "DATACENTER": center,
             "MABS": "latest",
             "PLUGIN_NAME": plugin,
-            "RETRY": "1",
             "TAGS": " ",
             "TEST_TYPE": "native",
             "THREADS": thrds,
