@@ -6,7 +6,7 @@ repositories{
 }
 
 dependencies {
-  compile (name:'zxing-android-embedded-4.2.0-OS', ext:'aar')
+  implementation (name:'zxing-android-embedded-4.2.0-OS', ext:'aar')
   implementation 'com.google.zxing:core:3.3.0'
 }
 
