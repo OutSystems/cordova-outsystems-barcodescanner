@@ -13,11 +13,12 @@
     <hook type="after_prepare" src="hooks/androidSetToolsTag.js" />
 
     <config-file target="AndroidManifest.xml" parent="application">        
-    <activity android:name="com.outsystems.plugins.barcodescanner.CustomScannerActivity"
-            android:screenOrientation="fullSensor"
-            android:stateNotNeeded="true"
-            android:theme="@style/zxing_CaptureTheme"
-            android:windowSoftInputMode="stateAlwaysHidden"></activity>    
+      <activity android:name="com.outsystems.plugins.barcodescanner.CustomScannerActivity"
+              android:screenOrientation="fullSensor"
+              android:stateNotNeeded="true"
+              android:exported="false"
+              android:theme="@style/zxing_CaptureTheme"
+              android:windowSoftInputMode="stateAlwaysHidden"></activity>    
     </config-file>
 
     <config-file target="AndroidManifest.xml" parent="/manifest">
