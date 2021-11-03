@@ -8,6 +8,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [1.0.4]
+- Chore: New plugin release to include metadata tag for MABS 7.2.0 compatibility
+
 ## [1.0.3]
 - Chore: New plugin release to include metadata tag in Extensability Configurations in the OS wrapper
 

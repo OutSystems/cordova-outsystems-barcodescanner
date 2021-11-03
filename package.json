@@ -1,6 +1,6 @@
 {
   "name": "com.outsystems.plugins.barcodescanner",
-  "version": "1.0.3",
+  "version": "1.0.4",
   "description": "Outsystems Plugin to scann barcodes",
   "keywords": [
     "ecosystem:cordova",
