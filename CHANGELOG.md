@@ -6,7 +6,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 
 
-## [Unreleased]
+## [1.0.5]
 
 - Fix: In iOS when cancelling the barcode scanner view, send an ERROR instead of a NO_RESULT (https://outsystemsrd.atlassian.net/browse/RMET-1261)
 
