@@ -40,7 +40,7 @@
     }
   ],
   "dependencies": {
-    "sax": "1.1.4"
+    "sax": "1.2.4"
   },
   "deprecated": false,
   "description": "XML Serialization and Parsing module based on Python's ElementTree.",
