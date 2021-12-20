@@ -55,7 +55,7 @@ CDVInvokedUrlCommand* cdvCommand;
     if (str != nil && [str length] > 0 && !([str isEqual: @"User closed before getting a result"])) {
         pluginResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_OK messageAsString: str];
     } else {
-        pluginResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_NO_RESULT messageAsString: str];
+        pluginResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_ERROR messageAsString: str];
     }
     [self.commandDelegate sendPluginResult:pluginResult callbackId:cdvCommand.callbackId];
 }
