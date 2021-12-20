@@ -8,6 +8,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+- Fix: In iOS when cancelling the barcode scanner view, send an ERROR instead of a NO_RESULT (https://outsystemsrd.atlassian.net/browse/RMET-1261)
+
 ## [1.0.4]
 - Chore: New plugin release to include metadata tag for MABS 7.2.0 compatibility
 
