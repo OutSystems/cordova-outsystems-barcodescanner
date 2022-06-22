@@ -74,23 +74,25 @@ public class OSBarcodeScanner extends CordovaPlugin {
 
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
-        if (requestCode != CUSTOMIZED_REQUEST_CODE && requestCode != IntentIntegrator.REQUEST_CODE) {
-            // This is important, otherwise the result will not be passed to the fragment
-            super.onActivityResult(requestCode, resultCode, data);
-            return;
-        }
-
-        IntentResult result = IntentIntegrator.parseActivityResult(resultCode, data);
-
-        if(result.getContents() == null) {
-            Intent originalIntent = result.getOriginalIntent();
-            if (originalIntent == null) {
-                _callbackContext.error("Cancelled");
-            } else if(originalIntent.hasExtra(Intents.Scan.MISSING_CAMERA_PERMISSION)) {
-                _callbackContext.error("Cancelled due to missing camera permission");
+        if (_callbackContext != null) {
+            if (requestCode != CUSTOMIZED_REQUEST_CODE && requestCode != IntentIntegrator.REQUEST_CODE) {
+                // This is important, otherwise the result will not be passed to the fragment
+                super.onActivityResult(requestCode, resultCode, data);
+                return;
             }
-        } else {
-            _callbackContext.success(result.getContents());
+    
+            IntentResult result = IntentIntegrator.parseActivityResult(resultCode, data);
+    
+            if(result.getContents() == null) {
+                Intent originalIntent = result.getOriginalIntent();
+                if (originalIntent == null) {
+                    _callbackContext.error("Cancelled");
+                } else if(originalIntent.hasExtra(Intents.Scan.MISSING_CAMERA_PERMISSION)) {
+                    _callbackContext.error("Cancelled due to missing camera permission");
+                }
+            } else {
+                _callbackContext.success(result.getContents());
+            }
         }
     }
 
