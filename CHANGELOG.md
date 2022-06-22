@@ -5,7 +5,9 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 
+## [1.0.6]
 
+- Fix: In Android added null check to avoid crash when the callbackContext is null (https://outsystemsrd.atlassian.net/browse/RMET-1675)
 ## [1.0.5]
 
 - Fix: In iOS when cancelling the barcode scanner view, send an ERROR instead of a NO_RESULT (https://outsystemsrd.atlassian.net/browse/RMET-1261)
