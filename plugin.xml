@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
-<plugin id="com.outsystems.plugins.barcodescanner" version="1.0.6" xmlns="http://apache.org/cordova/ns/plugins/1.0" xmlns:android="http://schemas.android.com/apk/res/android">
+<plugin id="com.outsystems.plugins.barcodescanner" version="1.0.7" xmlns="http://apache.org/cordova/ns/plugins/1.0" xmlns:android="http://schemas.android.com/apk/res/android">
   <name>OSBarcodeScanner</name>
   <description>Outsystems Plugin to scann barcodes</description>
   <author>OutSystems Inc</author>
@@ -69,6 +69,8 @@
     <header-file src="src/ios/CDVBarcodeOptions.h"/>
     <source-file src="src/ios/OSBarcodeScanner.m"/>
     <header-file src="src/ios/OSBarcodeScanner.h"/>
+    <source-file src="src/ios/OSBarcodeErrors.m"/>
+    <header-file src="src/ios/OSBarcodeErrors.h"/>
     <source-file src="src/ios/ScannerViewController.m"/>
     <header-file src="src/ios/ScannerViewController.h"/>
     <source-file src="src/ios/ScannerViewController.xib"/>
