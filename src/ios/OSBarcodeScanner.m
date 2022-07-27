@@ -1,6 +1,7 @@
 #import "OSBarcodeScanner.h"
 #import "CDVBarcodeOptions.h"
 #import "ScannerViewController.h"
+#import "OSBarcodeErrors.h"
 
 @implementation OSBarcodeScanner
 
@@ -22,7 +23,8 @@ CDVInvokedUrlCommand* cdvCommand;
     } else if([options.cameraDirection isEqualToString:@"2"]){
         directionEnum = kFront;
     } else {
-        CDVPluginResult* pluginResult = [CDVPluginResult resultWithStatus: CDVCommandStatus_ERROR messageAsString:@"Wrong parameter camera direction can only be backCamera or frontCamera. Defaults to backCamera."];
+        NSDictionary* errDict = [OSBarcodeErrors getErrorDictionary:kCameraDirectionError];
+        CDVPluginResult* pluginResult = [CDVPluginResult resultWithStatus: CDVCommandStatus_ERROR messageAsDictionary: errDict];
         [self.commandDelegate sendPluginResult:pluginResult callbackId:cdvCommand.callbackId];
         return;
     }
@@ -36,7 +38,9 @@ CDVInvokedUrlCommand* cdvCommand;
     } else if([options.scanOrientation isEqualToString:@"2"]) {
         orientationEnum = kLandscape;
     } else {
-        CDVPluginResult* pluginResult = [CDVPluginResult resultWithStatus: CDVCommandStatus_ERROR messageAsString:@"Wrong parameter scan orientation can only be adaptive, portrait or landscape. Defaults to adaptive."];
+        NSDictionary* errDict = [OSBarcodeErrors getErrorDictionary:kOrientationError];
+        CDVPluginResult* pluginResult = [CDVPluginResult resultWithStatus: CDVCommandStatus_ERROR
+                                                      messageAsDictionary: errDict];
         [self.commandDelegate sendPluginResult:pluginResult callbackId:cdvCommand.callbackId];
         return;
     }
@@ -52,10 +56,11 @@ CDVInvokedUrlCommand* cdvCommand;
 -(void)notificationHandler:(NSNotification *)notice{
     NSString *str = [notice object];
     CDVPluginResult* pluginResult = nil;
-    if (str != nil && [str length] > 0 && !([str isEqual: @"User closed before getting a result"])) {
+    if (str != nil && [str length] > 0 && !([str isEqual: [OSBarcodeErrors getErrorMessage:kScanningCancelled]])) {
         pluginResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_OK messageAsString: str];
     } else {
-        pluginResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_ERROR messageAsString: str];
+        NSDictionary* errDict = [OSBarcodeErrors getErrorDictionary:kScanningCancelled];
+        pluginResult = [CDVPluginResult resultWithStatus: CDVCommandStatus_ERROR messageAsDictionary: errDict];
     }
     [self.commandDelegate sendPluginResult:pluginResult callbackId:cdvCommand.callbackId];
 }

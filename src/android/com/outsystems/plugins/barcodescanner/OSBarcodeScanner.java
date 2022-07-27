@@ -82,14 +82,25 @@ public class OSBarcodeScanner extends CordovaPlugin {
             }
     
             IntentResult result = IntentIntegrator.parseActivityResult(resultCode, data);
-    
+
             if(result.getContents() == null) {
                 Intent originalIntent = result.getOriginalIntent();
-                if (originalIntent == null) {
+
+                try {
+                    JSONObject jsonResult = new JSONObject();
+                    if (originalIntent == null) {
+                        jsonResult.put("code", "OS-PLUG-BARC-0006");
+                        jsonResult.put("message", "Scanning cancelled.");
+                    } else if(originalIntent.hasExtra(Intents.Scan.MISSING_CAMERA_PERMISSION)) {
+                        jsonResult.put("code", "OS-PLUG-BARC-0007");
+                        jsonResult.put("message", "Scanning cancelled due to missing camera permissions.");
+                    }
+                    _callbackContext.error(jsonResult);
+
+                } catch (Exception e) {
                     _callbackContext.error("Cancelled");
-                } else if(originalIntent.hasExtra(Intents.Scan.MISSING_CAMERA_PERMISSION)) {
-                    _callbackContext.error("Cancelled due to missing camera permission");
                 }
+
             } else {
                 _callbackContext.success(result.getContents());
             }

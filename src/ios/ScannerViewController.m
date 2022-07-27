@@ -8,6 +8,7 @@
 #import "ScannerViewController.h"
 #import <AudioToolbox/AudioToolbox.h>
 #import <QuartzCore/CoreAnimation.h>
+#import "OSBarcodeErrors.h"
 
 @interface ScannerViewController ()
 
@@ -360,7 +361,7 @@
 }
 
 - (IBAction)closeBtnPressed:(id)sender {
-    [self dissmissVC:@"User closed before getting a result"];
+    [self dissmissVC: [OSBarcodeErrors getErrorMessage:kScanningCancelled]];
 }
 
 - (IBAction)scanBtnPressed:(id)sender {
@@ -375,7 +376,6 @@
 
 -(void)dissmissVC:(NSString*)message{
     [self dismissViewControllerAnimated:true completion:nil];
-    NSLog(@"DismissViewController");
     
     //raise notification about dismiss
     [[NSNotificationCenter defaultCenter]
