@@ -341,7 +341,13 @@
     CGAffineTransform inverse = CGAffineTransformInvert(_captureSizeTransform);
     NSMutableArray *points = [[NSMutableArray alloc] init];
     NSString *location = @"";
-    for (ZXResultPoint *resultPoint in result.resultPoints) {
+    
+    NSPredicate *predicate = [NSPredicate predicateWithBlock:^BOOL(id item, NSDictionary *unused) {
+        return ![item isKindOfClass:NSNull.class];
+    }];
+    NSArray *resultPoints = [result.resultPoints filteredArrayUsingPredicate:predicate];
+    
+    for (ZXResultPoint *resultPoint in resultPoints) {
         CGPoint cgPoint = CGPointMake(resultPoint.x, resultPoint.y);
         CGPoint transformedPoint = CGPointApplyAffineTransform(cgPoint, inverse);
         transformedPoint = [self.scanRectView convertPoint:transformedPoint toView:self.scanRectView.window];
