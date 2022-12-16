@@ -6,6 +6,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+# 16-12-2022
+- Fix: Android | Remove dependency to jcenter from Gradle (https://outsystemsrd.atlassian.net/browse/RMET-2036).
+
 ## [1.0.8]
 - Fix: iOS | Reading PDF417 code types causes a crash (https://outsystemsrd.atlassian.net/browse/RMET-746).
 
