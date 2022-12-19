@@ -6,6 +6,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [1.0.9]
+
 # 16-12-2022
 - Fix: Android | Remove dependency to jcenter from Gradle (https://outsystemsrd.atlassian.net/browse/RMET-2036).
 
