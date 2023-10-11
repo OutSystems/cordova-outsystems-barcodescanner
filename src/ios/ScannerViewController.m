@@ -84,6 +84,14 @@
     self.capture.focusMode = AVCaptureFocusModeContinuousAutoFocus;
     self.capture.delegate = self;
     
+    /**
+     Begin tentative fix for https://outsystemsrd.atlassian.net/browse/RMET-2878
+     */
+    [self overrideMinimumFocusDistance];
+    /**
+     End tentative fix for https://outsystemsrd.atlassian.net/browse/RMET-2878
+     */
+    
     self.scanning = NO;
     
     self.scanButton.layer.cornerRadius = 25;
@@ -387,6 +395,36 @@
     [[NSNotificationCenter defaultCenter]
      postNotificationName:@"barcode reader finished"
      object:message];
+}
+
+// MARK: - https://outsystemsrd.atlassian.net/browse/RMET-2878 tentative fix
+
+#define DEGREES_TO_RADIANS(degrees)((M_PI * degrees)/180)
+
+/// Optimise the user experience for scanning small barcodes (we're using 30 mm as target size).
+/// This is applied for versions using iOS 15.0 or above.
+- (void)overrideMinimumFocusDistance {
+    if (@available(iOS 15.0, *)) {
+        AVCaptureDevice *videoDevice = self.capture.captureDevice;
+        
+        if (videoDevice.minimumFocusDistance != -1.0) { // "-1.0" is the value for unknown distance
+            int deviceFieldOfView = videoDevice.activeFormat.videoFieldOfView;
+            float previewFillPercentage = 0.8; // value between 0 and 1, target object will fill 80% of preview window
+            float minimumTargetObjectSize = 30.0; // min width of target object in mm
+            float radians = DEGREES_TO_RADIANS(deviceFieldOfView / 2.0);
+            float filledTargetObjectSize = minimumTargetObjectSize / previewFillPercentage;
+            float minimumSubjectDistance = filledTargetObjectSize / tan(radians); // Field of View equation
+            
+            float deviceMinimumFocusDistance = videoDevice.minimumFocusDistance;
+            
+            if (minimumSubjectDistance < deviceMinimumFocusDistance) {
+                float zoomFactor = deviceMinimumFocusDistance / minimumSubjectDistance;
+                [videoDevice lockForConfiguration:NULL];
+                [videoDevice setVideoZoomFactor:zoomFactor];
+                [videoDevice unlockForConfiguration];
+            }
+        }
+    }
 }
 
 @end
