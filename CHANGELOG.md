@@ -6,6 +6,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+- Chore: iOS | Use `podspec` element instead of it being a `framework` attribute.
+
 ## [1.0.9]
 
 # 16-12-2022
