@@ -78,7 +78,7 @@
     
     <podspec>
         <pods>
-            <pod name="ZXingObjC" git="https://github.com/OutSystems/ZXingObjC.git" tag="3.6.4" />
+            <pod name="ZXingObjC" git="https://github.com/OutSystems/ZXingObjC.git" tag="3.6.4+1.0.0" />
         </pods>
     </podspec>
     
