@@ -401,7 +401,7 @@
 
 #define DEGREES_TO_RADIANS(degrees)((M_PI * degrees)/180)
 
-/// Optimise the user experience for scanning small barcodes (we're using 30 mm as target size).
+/// Optimise the user experience for scanning small barcodes (we're using 45 mm as target size).
 /// This is applied for versions using iOS 15.0 or above.
 - (void)overrideMinimumFocusDistance {
     if (@available(iOS 15.0, *)) {
@@ -410,7 +410,7 @@
         if (videoDevice.minimumFocusDistance != -1.0) { // "-1.0" is the value for unknown distance
             int deviceFieldOfView = videoDevice.activeFormat.videoFieldOfView;
             float previewFillPercentage = 0.8; // value between 0 and 1, target object will fill 80% of preview window
-            float minimumTargetObjectSize = 30.0; // min width of target object in mm
+            float minimumTargetObjectSize = 45.0; // min width of target object in mm
             float radians = DEGREES_TO_RADIANS(deviceFieldOfView / 2.0);
             float filledTargetObjectSize = minimumTargetObjectSize / previewFillPercentage;
             float minimumSubjectDistance = filledTargetObjectSize / tan(radians); // Field of View equation
