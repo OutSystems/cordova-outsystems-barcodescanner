@@ -6,7 +6,7 @@ import org.apache.cordova.CordovaPlugin;
 import org.apache.cordova.CallbackContext;
 import org.json.JSONArray;
 import org.json.JSONException;
-import org.json.JSONObject; 
+import org.json.JSONObject;
 
 import com.google.zxing.client.android.Intents;
 import com.google.zxing.integration.android.IntentIntegrator;
@@ -33,13 +33,15 @@ public class OSBarcodeScanner extends CordovaPlugin {
             boolean scanLine = params.optBoolean("scan_line");
             boolean scanButton = params.optBoolean("scan_button");
             String scanText = params.optString("scan_button_text");
+            int scanType = params.optInt("scan_type");
 
             this.scan(scanInstructions,
                     cameraDirection,
                     scanOrientation,
                     scanLine,
                     scanButton,
-                    scanText);
+                    scanText,
+                    scanType);
             return true;
         }
         return false;
@@ -50,7 +52,8 @@ public class OSBarcodeScanner extends CordovaPlugin {
                       int scanOrientation,
                       boolean scanLine,
                       boolean scanButton,
-                      String scanText) {
+                      String scanText,
+                      int scanType) {
 
         IntentIntegrator integrator = new IntentIntegrator(this.cordova.getActivity());
         integrator.setOrientationLocked(false);
@@ -67,6 +70,7 @@ public class OSBarcodeScanner extends CordovaPlugin {
         integrator.addExtra("SCAN_LINE", scanLine);
         integrator.addExtra("SCAN_BUTTON", scanButton);
         integrator.addExtra("SCAN_TEXT", scanText);
+        integrator.addExtra("SCAN_TYPE", scanType);
         integrator.initiateScan();
 
         this.cordova.setActivityResultCallback(this);
