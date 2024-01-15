@@ -33,6 +33,7 @@
         self.scanOrientation = @"3";
         self.scanInstructions = @"";
         self.scanButtonText = @"Scan";
+        self.scanType = @"2";
     }
 
     return self;
@@ -59,6 +60,9 @@
     }
     if([options objectForKey: @"camera_direction"] != nil) {
         obj.cameraDirection = (NSString*)[options objectForKey: @"camera_direction"];
+    }
+    if([options objectForKey: @"scan_type"] != nil) {
+        obj.scanType = (NSString*)[options objectForKey: @"scan_type"];
     }
 
     return obj;
