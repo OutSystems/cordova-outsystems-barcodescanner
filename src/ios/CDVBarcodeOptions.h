@@ -26,6 +26,7 @@
 @property (nonatomic, copy) NSString* scanButtonText;
 @property (nonatomic, copy) NSString* scanInstructions;
 @property (nonatomic, copy) NSString* scanOrientation;
+@property (nonatomic, copy) NSString* scanType;
 
 + (CDVBarcodeOptions*)parseOptions:(NSDictionary*)options;
 
