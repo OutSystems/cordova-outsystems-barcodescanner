@@ -27,6 +27,7 @@
 @property (nonatomic) ScanOrientation orientation;
 @property (nonatomic) bool lineEnabled;
 @property (nonatomic) bool scanButtonEnabled;
+@property (nonatomic) NSString* scanType;
 
 @end
 
@@ -37,7 +38,7 @@
 
 #pragma mark - View Controller Methods
 
--(instancetype)initWithScanInstructions:(NSString *)instructions CameraDirection:(CameraDirection)direction ScanOrientation:(ScanOrientation)orientation ScanLine:(bool)lineEnabled ScanButtonEnabled:(bool)buttonEnabled ScanButton:(NSString *)buttonTitle {
+-(instancetype)initWithScanInstructions:(NSString *)instructions CameraDirection:(CameraDirection)direction ScanOrientation:(ScanOrientation)orientation ScanLine:(bool)lineEnabled ScanButtonEnabled:(bool)buttonEnabled ScanButton:(NSString *)buttonTitle ScanType:(NSString *)scanType{
     self = [super initWithNibName:nil bundle:nil];
     self.instructionsText = instructions;
     self.scanButtonTitle = buttonTitle;
@@ -45,6 +46,7 @@
     self.orientation = orientation;
     self.lineEnabled = lineEnabled;
     self.scanButtonEnabled = buttonEnabled;
+    self.scanType = scanType;
     return self;
 }
 
