@@ -84,7 +84,6 @@
             break;
     }
     self.capture.focusMode = AVCaptureFocusModeContinuousAutoFocus;
-    self.capture.delegate = self;
     
     self.scanning = NO;
     
