@@ -86,6 +86,7 @@
     self.capture.focusMode = AVCaptureFocusModeContinuousAutoFocus;
     
     self.scanning = NO;
+    self.capture.delegate = self;
     
     self.scanButton.layer.cornerRadius = 25;
     self.scanButton.clipsToBounds = YES;
