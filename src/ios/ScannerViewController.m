@@ -62,7 +62,7 @@
             [[UIDevice currentDevice] setValue:[NSNumber numberWithInt:UIDeviceOrientationPortrait] forKey:@"orientation"];
             break;
         case kLandscape:
-            [[UIDevice currentDevice] setValue:[NSNumber numberWithInt:UIDeviceOrientationLandscapeRight] forKey:@"orientation"];
+            [[UIDevice currentDevice] setValue:[NSNumber numberWithInt:UIDeviceOrientationPortrait] forKey:@"orientation"];
             break;
         default:
             break;
@@ -230,7 +230,7 @@
         case UIInterfaceOrientationPortraitUpsideDown:
             return 180;
         default:
-            return 90;
+            return 0;
     }
 }
 
@@ -238,34 +238,32 @@
     UIInterfaceOrientation orientation = [[UIApplication sharedApplication] statusBarOrientation];
     switch (orientation) {
         case UIInterfaceOrientationPortrait:
-            return 0;
-        case UIInterfaceOrientationLandscapeLeft:
             return 90;
-        case UIInterfaceOrientationLandscapeRight:
-            return 270;
-        case UIInterfaceOrientationPortraitUpsideDown:
+        case UIInterfaceOrientationLandscapeLeft:
             return 180;
+        case UIInterfaceOrientationLandscapeRight:
+            return 0;
+        case UIInterfaceOrientationPortraitUpsideDown:
+            return 270;
         default:
             return 90;
     }
 }
 
 - (void)applyRectOfInterest:(UIInterfaceOrientation)orientation {
-    CGRect transformedVideoRect = [self.view convertRect:self.scanRectView.frame fromView:self.scanRectView.superview];
-    if(UIInterfaceOrientationIsLandscape(orientation)) {
-        // Convert CGPoint under portrait mode to map with orientation of image
-        // because the image will be cropped before rotate
-        // reference: https://github.com/TheLevelUp/ZXingObjC/issues/222
-        CGFloat realX = transformedVideoRect.origin.y;
-        CGFloat realY = transformedVideoRect.origin.x;
-        CGFloat realWidth = transformedVideoRect.size.height;
-        CGFloat realHeight = transformedVideoRect.size.width;
-        transformedVideoRect = CGRectMake(realX, realY, realWidth, realHeight);
+    CGRect transformedScanRect;
+    if (UIInterfaceOrientationIsLandscape(orientation)) {
+        transformedScanRect = CGRectMake(_scanView.frame.origin.y,
+                                         _scanView.frame.origin.x,
+                                         _scanView.frame.size.height,
+                                         _scanView.frame.size.width);
+    } else {
+        transformedScanRect = _scanView.frame;
     }
     
-    CGRect outputRect = [(AVCaptureVideoPreviewLayer*) self.capture.layer metadataOutputRectOfInterestForRect:transformedVideoRect];
-    CGRect rectOfInterest = [self.capture.output rectForMetadataOutputRectOfInterest:outputRect];
-    self.capture.scanRect = rectOfInterest;
+    CGRect metadataOutputRect = [(AVCaptureVideoPreviewLayer *) _capture.layer metadataOutputRectOfInterestForRect:transformedScanRect];
+    CGRect rectOfInterest = [_capture.output rectForMetadataOutputRectOfInterest:metadataOutputRect];
+    _capture.scanRect = rectOfInterest;
 }
 
 #pragma mark - Private Methods
