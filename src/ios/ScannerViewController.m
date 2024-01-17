@@ -238,15 +238,15 @@
     UIInterfaceOrientation orientation = [[UIApplication sharedApplication] statusBarOrientation];
     switch (orientation) {
         case UIInterfaceOrientationPortrait:
-            return 90;
+            return 0;
         case UIInterfaceOrientationLandscapeLeft:
-            return 180;
+            return 90;
         case UIInterfaceOrientationLandscapeRight:
-            return 0;
-        case UIInterfaceOrientationPortraitUpsideDown:
             return 270;
+        case UIInterfaceOrientationPortraitUpsideDown:
+            return 180;
         default:
-            return 0;
+            return 90;
     }
 }
 
