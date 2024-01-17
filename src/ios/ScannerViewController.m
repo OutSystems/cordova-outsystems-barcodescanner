@@ -207,15 +207,42 @@
 }
 
 #pragma mark - Private
-- (void)applyOrientation:(CGFloat)animationTime {
-    CGFloat captureRotation = [self getCaptureRotation];
-    __weak ScannerViewController* weakSelf = self;
-    [UIView animateWithDuration:animationTime animations:^{
-        CGAffineTransform transform = CGAffineTransformMakeRotation((CGFloat)(captureRotation / 180 * M_PI));
-        [weakSelf.capture setTransform:transform];
-        weakSelf.capture.layer.frame = weakSelf.view.bounds;
-        weakSelf.gradient.frame = weakSelf.laserGradient.bounds;
-    }];
+- (void)applyOrientation {
+    UIInterfaceOrientation orientation = [[UIApplication sharedApplication] statusBarOrientation];
+    float scanRectRotation;
+    float captureRotation;
+    
+    switch (orientation) {
+        case UIInterfaceOrientationPortrait:
+            captureRotation = 0;
+            scanRectRotation = 90;
+            break;
+        case UIInterfaceOrientationLandscapeLeft:
+            captureRotation = 90;
+            scanRectRotation = 180;
+            break;
+        case UIInterfaceOrientationLandscapeRight:
+            captureRotation = 270;
+            scanRectRotation = 0;
+            break;
+        case UIInterfaceOrientationPortraitUpsideDown:
+            captureRotation = 180;
+            scanRectRotation = 270;
+            break;
+        default:
+            captureRotation = 0;
+            scanRectRotation = 90;
+            break;
+    }
+    
+    [self applyRectOfInterest:orientation];
+    
+    CGFloat angleRadius = captureRotation / 180 * M_PI;
+    CGAffineTransform transform = CGAffineTransformMakeRotation(angleRadius);
+    
+    [self.capture setTransform:transform];
+    [self.capture setRotation:scanRectRotation];
+    self.capture.layer.frame = self.view.frame;
 }
 
 -(CGFloat)getCaptureRotation {
