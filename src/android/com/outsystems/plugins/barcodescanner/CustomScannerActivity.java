@@ -46,6 +46,7 @@ public class CustomScannerActivity extends Activity implements
         boolean scanLine = getIntent().getBooleanExtra("SCAN_LINE", true);
         boolean scanButtonVisible = getIntent().getBooleanExtra("SCAN_BUTTON", true);
         String scanButtonText = getIntent().getStringExtra("SCAN_TEXT");
+        int scanType = getIntent().getIntExtra("SCAN_TYPE", 2);
 
         setContentView(getResourceId("layout/activity_custom_scanner"));
         barcodeScannerView = findViewById(getResourceId("id/zxing_barcode_scanner"));
