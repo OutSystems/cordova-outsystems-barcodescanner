@@ -27,7 +27,6 @@
 @property (nonatomic) ScanOrientation orientation;
 @property (nonatomic) bool lineEnabled;
 @property (nonatomic) bool scanButtonEnabled;
-@property (nonatomic) NSString* scanType;
 
 @end
 
@@ -38,7 +37,7 @@
 
 #pragma mark - View Controller Methods
 
--(instancetype)initWithScanInstructions:(NSString *)instructions CameraDirection:(CameraDirection)direction ScanOrientation:(ScanOrientation)orientation ScanLine:(bool)lineEnabled ScanButtonEnabled:(bool)buttonEnabled ScanButton:(NSString *)buttonTitle ScanType:(NSString *)scanType{
+-(instancetype)initWithScanInstructions:(NSString *)instructions CameraDirection:(CameraDirection)direction ScanOrientation:(ScanOrientation)orientation ScanLine:(bool)lineEnabled ScanButtonEnabled:(bool)buttonEnabled ScanButton:(NSString *)buttonTitle {
     self = [super initWithNibName:nil bundle:nil];
     self.instructionsText = instructions;
     self.scanButtonTitle = buttonTitle;
@@ -46,7 +45,6 @@
     self.orientation = orientation;
     self.lineEnabled = lineEnabled;
     self.scanButtonEnabled = buttonEnabled;
-    self.scanType = scanType;
     return self;
 }
 
@@ -84,9 +82,9 @@
             break;
     }
     self.capture.focusMode = AVCaptureFocusModeContinuousAutoFocus;
+    self.capture.delegate = self;
     
     self.scanning = NO;
-    self.capture.delegate = self;
     
     self.scanButton.layer.cornerRadius = 25;
     self.scanButton.clipsToBounds = YES;
@@ -207,42 +205,15 @@
 }
 
 #pragma mark - Private
-- (void)applyOrientation {
-    UIInterfaceOrientation orientation = [[UIApplication sharedApplication] statusBarOrientation];
-    float scanRectRotation;
-    float captureRotation;
-    
-    switch (orientation) {
-        case UIInterfaceOrientationPortrait:
-            captureRotation = 0;
-            scanRectRotation = 90;
-            break;
-        case UIInterfaceOrientationLandscapeLeft:
-            captureRotation = 90;
-            scanRectRotation = 180;
-            break;
-        case UIInterfaceOrientationLandscapeRight:
-            captureRotation = 270;
-            scanRectRotation = 0;
-            break;
-        case UIInterfaceOrientationPortraitUpsideDown:
-            captureRotation = 180;
-            scanRectRotation = 270;
-            break;
-        default:
-            captureRotation = 0;
-            scanRectRotation = 90;
-            break;
-    }
-    
-    [self applyRectOfInterest:orientation];
-    
-    CGFloat angleRadius = captureRotation / 180 * M_PI;
-    CGAffineTransform transform = CGAffineTransformMakeRotation(angleRadius);
-    
-    [self.capture setTransform:transform];
-    [self.capture setRotation:scanRectRotation];
-    self.capture.layer.frame = self.view.frame;
+- (void)applyOrientation:(CGFloat)animationTime {
+    CGFloat captureRotation = [self getCaptureRotation];
+    __weak ScannerViewController* weakSelf = self;
+    [UIView animateWithDuration:animationTime animations:^{
+        CGAffineTransform transform = CGAffineTransformMakeRotation((CGFloat)(captureRotation / 180 * M_PI));
+        [weakSelf.capture setTransform:transform];
+        weakSelf.capture.layer.frame = weakSelf.view.bounds;
+        weakSelf.gradient.frame = weakSelf.laserGradient.bounds;
+    }];
 }
 
 -(CGFloat)getCaptureRotation {
@@ -257,7 +228,7 @@
         case UIInterfaceOrientationPortraitUpsideDown:
             return 180;
         default:
-            return 0;
+            return 90;
     }
 }
 
@@ -273,24 +244,26 @@
         case UIInterfaceOrientationPortraitUpsideDown:
             return 270;
         default:
-            return 90;
+            return 0;
     }
 }
 
 - (void)applyRectOfInterest:(UIInterfaceOrientation)orientation {
-    CGRect transformedScanRect;
-    if (UIInterfaceOrientationIsLandscape(orientation)) {
-        transformedScanRect = CGRectMake(_scanView.frame.origin.y,
-                                         _scanView.frame.origin.x,
-                                         _scanView.frame.size.height,
-                                         _scanView.frame.size.width);
-    } else {
-        transformedScanRect = _scanView.frame;
+    CGRect transformedVideoRect = [self.view convertRect:self.scanRectView.frame fromView:self.scanRectView.superview];
+    if(UIInterfaceOrientationIsLandscape(orientation)) {
+        // Convert CGPoint under portrait mode to map with orientation of image
+        // because the image will be cropped before rotate
+        // reference: https://github.com/TheLevelUp/ZXingObjC/issues/222
+        CGFloat realX = transformedVideoRect.origin.y;
+        CGFloat realY = transformedVideoRect.origin.x;
+        CGFloat realWidth = transformedVideoRect.size.height;
+        CGFloat realHeight = transformedVideoRect.size.width;
+        transformedVideoRect = CGRectMake(realX, realY, realWidth, realHeight);
     }
     
-    CGRect metadataOutputRect = [(AVCaptureVideoPreviewLayer *) _capture.layer metadataOutputRectOfInterestForRect:transformedScanRect];
-    CGRect rectOfInterest = [_capture.output rectForMetadataOutputRectOfInterest:metadataOutputRect];
-    _capture.scanRect = rectOfInterest;
+    CGRect outputRect = [(AVCaptureVideoPreviewLayer*) self.capture.layer metadataOutputRectOfInterestForRect:transformedVideoRect];
+    CGRect rectOfInterest = [self.capture.output rectForMetadataOutputRectOfInterest:outputRect];
+    self.capture.scanRect = rectOfInterest;
 }
 
 #pragma mark - Private Methods
@@ -417,5 +390,3 @@
 }
 
 @end
-
-
